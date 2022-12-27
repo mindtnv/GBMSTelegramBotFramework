@@ -20,7 +20,7 @@ public class UpdatePipelineBuilderTests
     }
 
     [Test]
-    public async Task ChainingWorkProperly([Values(10, 20, 30, 40)] int n)
+    public async Task ChainingWorkProperlyCounter([Values(10, 20, 30, 40)] int n)
     {
         var context = new Mock<UpdateContext>();
         var builder = new UpdatePipelineBuilder();
@@ -35,5 +35,32 @@ public class UpdatePipelineBuilderTests
         var handler = builder.Build();
         await handler(context.Object);
         Assert.AreEqual(n, counter);
+    }
+
+    [Test]
+    public async Task ChainingWorkProperlyItems([Values(10, 20, 30, 40)] int n)
+    {
+        var context = new Mock<UpdateContext>();
+        var builder = new UpdatePipelineBuilder();
+        var arr = new bool[n];
+        context.Object.Items["i"] = 0;
+        for (var j = 0; j < n; j++)
+            builder.Use((ctx, next) =>
+            {
+                var i = (int) ctx.Items["i"];
+                arr[i] = true;
+
+                if (i != 0)
+                    Assert.IsTrue(arr[i - 1]);
+                if (i != n - 1)
+                    Assert.IsFalse(arr[i + 1]);
+
+                ctx.Items["i"] = i + 1;
+                return next(ctx);
+            });
+
+        var handler = builder.Build();
+        await handler(context.Object);
+        Assert.IsTrue(arr.All(x => x));
     }
 }
