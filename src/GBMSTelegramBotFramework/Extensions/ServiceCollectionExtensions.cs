@@ -10,6 +10,7 @@ public static class ServiceCollectionExtensions
     {
         services.TryAddSingleton<IUpdateMiddlewareFactory, UpdateMiddlewareFactory>();
         services.TryAddSingleton<IUpdateHandlerFactory, UpdateHandlerFactory>();
+        services.TryAddSingleton<IUpdateContextFactory, UpdateContextFactory>();
         services.TryAdd(ServiceDescriptor.Transient(typeof(UpdateHandlerMiddleware<>),
             typeof(UpdateHandlerMiddleware<>)));
         return services;

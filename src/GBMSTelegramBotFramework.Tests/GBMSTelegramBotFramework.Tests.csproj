@@ -19,6 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\GBMSTelegramBotFramework.Testing\GBMSTelegramBotFramework.Testing.csproj"/>
         <ProjectReference Include="..\GBMSTelegramBotFramework\GBMSTelegramBotFramework.csproj"/>
     </ItemGroup>
 
