@@ -6,6 +6,13 @@ public class UpdatePipelineBuilder : IUpdatePipelineBuilder
 {
     private readonly List<Func<UpdateDelegate, UpdateDelegate>> _middlewares = new();
 
+    public UpdatePipelineBuilder(IServiceProvider services)
+    {
+        Services = services;
+    }
+
+    public IServiceProvider Services { get; }
+
     public IUpdatePipelineBuilder Use(Func<UpdateDelegate, UpdateDelegate> middleware)
     {
         _middlewares.Add(middleware);
