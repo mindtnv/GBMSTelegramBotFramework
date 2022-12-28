@@ -23,4 +23,7 @@ public static class UpdatePipelineBuilderExtensions
     public static IUpdatePipelineBuilder UseMiddleware<TMiddleware>(this IUpdatePipelineBuilder builder)
         where TMiddleware : IUpdateMiddleware =>
         builder.UseMiddleware(typeof(TMiddleware));
+
+    public static IUpdatePipelineBuilder UseHandler<THandler>(this IUpdatePipelineBuilder builder)
+        where THandler : IUpdateHandler => builder.UseMiddleware<UpdateHandlerMiddleware<THandler>>();
 }

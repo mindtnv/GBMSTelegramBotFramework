@@ -1,5 +1,6 @@
 using GBMSTelegramBotFramework.Abstractions;
 using GBMSTelegramBotFramework.Abstractions.Extensions;
+using GBMSTelegramBotFramework.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
@@ -87,6 +88,24 @@ public class UpdatePipelineBuilderTests
         Assert.AreEqual(2 + n, counter.Value);
     }
 
+    [Test]
+    public async Task UseHandlerTest([Random(5, 50, 5)] int n)
+    {
+        var context = new Mock<UpdateContext>();
+        var services = new ServiceCollection();
+        services.AddSingleton<Counter>();
+        services.AddTransient<TestHandler>();
+        services.AddTelegramBot();
+        var provider = services.BuildServiceProvider();
+        var builder = new UpdatePipelineBuilder(provider);
+        for (var i = 0; i < n; i++)
+            builder.UseHandler<TestHandler>();
+        var handler = builder.Build();
+        await handler(context.Object);
+        var counter = provider.GetRequiredService<Counter>();
+        Assert.AreEqual(n, counter.Value);
+    }
+
     private class Counter
     {
         public int Value { get; set; }
@@ -105,6 +124,22 @@ public class UpdatePipelineBuilderTests
         {
             _counter.Value++;
             return next(context);
+        }
+    }
+
+    private class TestHandler : IUpdateHandler
+    {
+        private readonly Counter _counter;
+
+        public TestHandler(Counter counter)
+        {
+            _counter = counter;
+        }
+
+        public Task HandleUpdateAsync(UpdateContext context)
+        {
+            _counter.Value++;
+            return Task.CompletedTask;
         }
     }
 }
