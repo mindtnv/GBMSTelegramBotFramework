@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GBMSTelegramBotFramework.Ab
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GBMSTelegramBotFramework.Tests", "src\GBMSTelegramBotFramework.Tests\GBMSTelegramBotFramework.Tests.csproj", "{784B6634-C7B0-412A-9C38-70EAB19128F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GBMSTelegramBotFramework.Testing", "src\GBMSTelegramBotFramework.Testing\GBMSTelegramBotFramework.Testing.csproj", "{5C469A6D-4499-41D7-812B-1AEC7CAF567A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{784B6634-C7B0-412A-9C38-70EAB19128F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{784B6634-C7B0-412A-9C38-70EAB19128F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{784B6634-C7B0-412A-9C38-70EAB19128F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C469A6D-4499-41D7-812B-1AEC7CAF567A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C469A6D-4499-41D7-812B-1AEC7CAF567A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C469A6D-4499-41D7-812B-1AEC7CAF567A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C469A6D-4499-41D7-812B-1AEC7CAF567A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
