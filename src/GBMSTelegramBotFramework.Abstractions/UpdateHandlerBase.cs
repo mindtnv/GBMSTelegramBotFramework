@@ -21,7 +21,7 @@ public abstract class UpdateHandlerBase : IUpdateHandler
         UpdateType.MyChatMember       => OnMyChatMemberAsync(context),
         UpdateType.ChatMember         => OnChatMemberAsync(context),
         UpdateType.ChatJoinRequest    => OnChatJoinRequestAsync(context),
-        _                             => throw new ArgumentOutOfRangeException()
+        _                             => throw new ArgumentOutOfRangeException(),
     };
 
     public virtual Task OnMessageAsync(UpdateContext context) => Task.CompletedTask;

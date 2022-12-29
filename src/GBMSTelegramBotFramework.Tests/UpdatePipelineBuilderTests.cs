@@ -1,7 +1,7 @@
 using GBMSTelegramBotFramework.Abstractions;
 using GBMSTelegramBotFramework.Abstractions.Extensions;
-using GBMSTelegramBotFramework.Extensions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
 
 namespace GBMSTelegramBotFramework.Tests;
@@ -93,9 +93,13 @@ public class UpdatePipelineBuilderTests
     {
         var context = new Mock<UpdateContext>();
         var services = new ServiceCollection();
+        services.TryAddSingleton<IUpdateMiddlewareFactory, UpdateMiddlewareFactory>();
+        services.TryAddSingleton<IUpdateHandlerFactory, UpdateHandlerFactory>();
+        services.TryAddSingleton<IUpdateContextFactory, UpdateContextFactory>();
+        services.TryAdd(ServiceDescriptor.Transient(typeof(UpdateHandlerMiddleware<>),
+            typeof(UpdateHandlerMiddleware<>)));
         services.AddSingleton<Counter>();
         services.AddTransient<TestHandler>();
-        services.AddTelegramBot();
         var provider = services.BuildServiceProvider();
         var builder = new UpdatePipelineBuilder(provider);
         for (var i = 0; i < n; i++)

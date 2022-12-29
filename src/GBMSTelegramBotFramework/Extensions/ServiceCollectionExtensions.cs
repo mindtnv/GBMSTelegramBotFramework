@@ -6,19 +6,23 @@ namespace GBMSTelegramBotFramework.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    private static IServiceCollection AddUpdatePipelineBuilder(this IServiceCollection services)
+    private static IServiceCollection AddUpdatePipelineBuilderServices(this IServiceCollection services)
     {
         services.TryAddSingleton<IUpdateMiddlewareFactory, UpdateMiddlewareFactory>();
         services.TryAddSingleton<IUpdateHandlerFactory, UpdateHandlerFactory>();
         services.TryAddSingleton<IUpdateContextFactory, UpdateContextFactory>();
-        services.TryAdd(ServiceDescriptor.Transient(typeof(UpdateHandlerMiddleware<>),
+        services.TryAdd(ServiceDescriptor.Scoped(typeof(UpdateHandlerMiddleware<>),
             typeof(UpdateHandlerMiddleware<>)));
         return services;
     }
 
-    public static IServiceCollection AddTelegramBot(this IServiceCollection services)
+    public static IServiceCollection AddTelegramBot(this IServiceCollection services,
+        Action<IBotRegistrationConfigurator> configure)
     {
-        services.AddUpdatePipelineBuilder();
+        services.AddUpdatePipelineBuilderServices();
+        var configurator = new BotRegistrationConfigurator(services);
+        configure(configurator);
+        configurator.Configure();
         return services;
     }
 }
