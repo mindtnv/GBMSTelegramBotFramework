@@ -2,6 +2,7 @@
 using GBMSTelegramBotFramework.Abstractions.Extensions;
 using GBMSTelegramBotFramework.Extensions;
 using GBMSTelegramBotFramework.Testing;
+using GBMSTelegramBotFramework.Testing.Builders;
 using GBMSTelegramBotFramework.Testing.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
