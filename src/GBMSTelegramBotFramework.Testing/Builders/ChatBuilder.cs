@@ -13,7 +13,7 @@ public class ChatBuilder : BuilderBase
     }
 
     public Chat Build() =>
-        new Chat
+        new()
         {
             Id = _id,
         };

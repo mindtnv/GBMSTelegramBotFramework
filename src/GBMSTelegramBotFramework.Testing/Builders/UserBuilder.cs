@@ -69,7 +69,7 @@ public class UserBuilder : BuilderBase
     }
 
     public User Build() =>
-        new User
+        new()
         {
             Id = _id,
             IsBot = _isBot,

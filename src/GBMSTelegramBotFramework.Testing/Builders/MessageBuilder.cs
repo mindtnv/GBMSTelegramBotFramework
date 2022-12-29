@@ -41,7 +41,7 @@ public class MessageBuilder : BuilderBase
     }
 
     public Message Build() =>
-        new Message
+        new()
         {
             Chat = _chatBuilderAction != null
                 ? new ChatBuilder().Configure(_chatBuilderAction).Build()

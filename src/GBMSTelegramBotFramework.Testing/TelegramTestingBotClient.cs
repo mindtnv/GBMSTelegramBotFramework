@@ -5,7 +5,7 @@ using Telegram.Bot.Requests.Abstractions;
 
 namespace GBMSTelegramBotFramework.Testing;
 
-public class TestTelegramBotClient : ITelegramBotClient
+public class TelegramTestingBotClient : ITelegramBotClient
 {
     public List<IRequest> Requests { get; } = new();
     public bool LocalBotServer { get; }

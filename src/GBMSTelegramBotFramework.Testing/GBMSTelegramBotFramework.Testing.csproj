@@ -11,4 +11,8 @@
         <ProjectReference Include="..\GBMSTelegramBotFramework.Abstractions\GBMSTelegramBotFramework.Abstractions.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <PackageReference Include="FluentAssertions" Version="6.8.0"/>
+    </ItemGroup>
+
 </Project>

@@ -4,9 +4,10 @@ namespace GBMSTelegramBotFramework.Testing.Extensions;
 
 public static class BotRegistrationConfiguratorExtensions
 {
-    public static IBotRegistrationConfigurator UseTestClient(this IBotRegistrationConfigurator registrationConfigurator)
+    public static IBotRegistrationConfigurator UseTestingClient(
+        this IBotRegistrationConfigurator registrationConfigurator)
     {
-        registrationConfigurator.UseTelegramBotClient(new TestTelegramBotClient());
+        registrationConfigurator.UseTelegramBotClient(new TelegramTestingBotClient());
         return registrationConfigurator;
     }
 }

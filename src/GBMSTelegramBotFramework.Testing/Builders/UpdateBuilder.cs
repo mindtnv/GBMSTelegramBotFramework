@@ -20,11 +20,21 @@ public class UpdateBuilder : BuilderBase
     }
 
     public Update Build() =>
-        new Update
+        new()
         {
             Message = _messageBuilderAction != null
                 ? new MessageBuilder().Configure(_messageBuilderAction).Build()
                 : null,
             Id = _id,
         };
+
+    public static UpdateBuilder WithTextMessage(string text, Action<ChatBuilder>? chatConfigure = default)
+    {
+        return new UpdateBuilder().WithMessage(m =>
+        {
+            m.WithText(text);
+            if (chatConfigure is not null)
+                m.WithChat(chatConfigure);
+        });
+    }
 }
