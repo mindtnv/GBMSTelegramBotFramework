@@ -25,4 +25,10 @@ public static class ServiceCollectionExtensions
         configurator.Configure();
         return services;
     }
+
+    public static IServiceCollection UseTelegramLongPulling(this IServiceCollection services)
+    {
+        services.AddHostedService<LongPullingHostedService>();
+        return services;
+    }
 }
