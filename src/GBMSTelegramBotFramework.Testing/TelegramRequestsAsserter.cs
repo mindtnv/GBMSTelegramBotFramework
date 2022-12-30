@@ -13,6 +13,8 @@ public class TelegramRequestsAsserter : ITelegramRequestsAsserter
         _requests = requests.ToList();
     }
 
+    public bool IsFinished => _currentRequest >= _requests.Count;
+
     public ITelegramRequestsAsserter AssertRequest(Action<IRequest> assertAction)
     {
         _currentRequest.Should().BeLessThan(_requests.Count);

@@ -2,8 +2,9 @@
 
 public abstract class CommandHandlerBase : UpdateHandlerBase
 {
-    private static readonly string CommandName = "CommandName";
-    private static readonly string CommandArgs = "CommandArgs";
+    public static readonly string CommandName = "CommandName";
+    public static readonly string CommandArgs = "CommandArgs";
+    public static readonly string IsCommandExecuted = "IsCommandExecuted";
     public abstract string Name { get; }
     public abstract Task ExecuteAsync(UpdateContext context, string[] args);
 
@@ -12,10 +13,15 @@ public abstract class CommandHandlerBase : UpdateHandlerBase
         if (!GetCommandInfoFromMessage(context))
             return Task.CompletedTask;
 
-        return (context.Items[CommandName] as string ?? throw new ApplicationException())
-            .Equals(Name, StringComparison.OrdinalIgnoreCase)
-                ? ExecuteAsync(context, context.Items[CommandArgs] as string[] ?? throw new ApplicationException())
-                : Task.CompletedTask;
+        if ((context.Items[CommandName] as string ?? throw new ApplicationException())
+            .Equals(Name, StringComparison.OrdinalIgnoreCase))
+        {
+            context.Items[IsCommandExecuted] = true;
+            return ExecuteAsync(context, context.Items[CommandArgs] as string[] ?? throw new ApplicationException());
+        }
+
+        context.Items[IsCommandExecuted] = false;
+        return Task.CompletedTask;
     }
 
     private static bool GetCommandInfoFromMessage(UpdateContext context)

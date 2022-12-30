@@ -24,4 +24,10 @@ public static class TelegramRequestsAsserterExtensions
                 .AssertRequest(r => r.As<SendMessageRequest>().ChatId.Should().Be(chatId));
         return asserter;
     }
+
+    public static ITelegramRequestsAsserter ShouldNotSendMessage(this ITelegramRequestsAsserter asserter)
+    {
+        asserter.IsFinished.Should().BeTrue();
+        return asserter;
+    }
 }
