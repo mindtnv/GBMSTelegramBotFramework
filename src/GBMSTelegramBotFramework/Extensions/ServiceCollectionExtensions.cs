@@ -1,7 +1,6 @@
 ﻿using GBMSTelegramBotFramework.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Hosting;
 
 namespace GBMSTelegramBotFramework.Extensions;
 
@@ -30,20 +29,25 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection UseTelegramLongPulling(this IServiceCollection services)
     {
-        if (services.Contains(new ServiceDescriptor(typeof(IHostedService), typeof(WebhookUrlResolver))))
+        if (services.Any(x => x.ImplementationType == typeof(WebhookHostedService)))
             throw new InvalidOperationException("You can't use long pulling and webhook at the same time");
 
         services.AddHostedService<LongPullingHostedService>();
         return services;
     }
 
-    public static IServiceCollection UseTelegramWebHook(this IServiceCollection services)
+    public static IServiceCollection UseTelegramWebHook(this IServiceCollection services) =>
+        UseTelegramWebHook(services, _ => { });
+
+    public static IServiceCollection UseTelegramWebHook(this IServiceCollection services,
+        Action<WebhookOptions> configure)
     {
-        if (services.Contains(new ServiceDescriptor(typeof(IHostedService), typeof(LongPullingHostedService))))
+        if (services.Any(x => x.ImplementationType == typeof(LongPullingHostedService)))
             throw new InvalidOperationException("You can't use long pulling and webhook at the same time");
 
         services.AddSingleton<IWebhookUrlResolver, WebhookUrlResolver>();
         services.AddHostedService<WebhookHostedService>();
+        services.Configure(configure);
         return services;
     }
 }
