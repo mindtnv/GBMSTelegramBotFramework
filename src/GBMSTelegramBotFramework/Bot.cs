@@ -11,7 +11,7 @@ internal class Bot : IBot
     }
 
     public IServiceProvider Services { get; }
-    public BotOptions Options { get; set; }
-    public ITelegramBotClient Client { get; set; }
-    public UpdateDelegate UpdateHandler { get; set; }
+    public BotOptions Options { get; set; } = null!;
+    public ITelegramBotClient Client { get; set; } = null!;
+    public UpdateDelegate UpdateHandler { get; set; } = null!;
 }

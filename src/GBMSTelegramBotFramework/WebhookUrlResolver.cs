@@ -10,7 +10,7 @@ public class WebhookUrlResolver : IWebhookUrlResolver
 
     public WebhookUrlResolver(IOptions<WebhookOptions> options)
     {
-        _url = options.Value.Url;
+        _url = options.Value.Url ?? throw new InvalidOperationException("Webhook url is not set");
         _secret = string.IsNullOrEmpty(options.Value.Secret) ? Guid.NewGuid().ToString() : options.Value.Secret;
     }
 
