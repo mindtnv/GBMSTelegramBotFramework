@@ -1,24 +1,68 @@
-﻿using GBMSTelegramBotFramework.Abstractions;
+﻿using FluentAssertions;
+using GBMSTelegramBotFramework.Abstractions;
 using GBMSTelegramBotFramework.Abstractions.Extensions;
 using GBMSTelegramBotFramework.Testing.Builders;
 using GBMSTelegramBotFramework.Testing.Extensions;
 using GBMSTelegramBotFramework.Tests.Commands;
-using Telegram.Bot;
 
 namespace GBMSTelegramBotFramework.Tests;
 
 [TestFixture]
 public class CommandHandlerBaseTests
 {
-    private class StartCommandHandler : CommandHandlerBase
+    [SetUp]
+    public void SetUp()
     {
-        public override string Name => "start";
+        CommandHandlerBase.Prefix = "/";
+    }
 
-        public override Task ExecuteAsync(UpdateContext context, string[] args)
+    [Test]
+    public async Task ContextItemsIsCommandExecutedTest1()
+    {
+        var finalAssertion = (UpdateContext context) =>
         {
-            var message = context.Update.Message;
-            return context.Bot.Client.SendTextMessageAsync(message.Chat.Id, "Hello World!");
-        }
+            context.Items.Should().ContainKey(CommandHandlerBase.IsCommandExecuted);
+            context.Items["IsCommandExecuted"].As<bool>().Should().BeTrue();
+            context.Items.Should().ContainKey(CommandHandlerBase.CommandName);
+            context.Items["CommandName"].As<string>().Should().Be("start");
+        };
+        var bot = Utils.CreateTestBot(bot =>
+        {
+            bot.UseHandler<StartCommandHandler>()
+               .UseCommand<SumCommandHandler>()
+               .AssertContext(finalAssertion);
+        });
+        var update = UpdateBuilder.WithTextMessage("/start").Build();
+        await bot.HandleAndAssertAsync(update, x => x.ShouldSendMessageWithText(StartCommandHandler.Message));
+    }
+
+    [Test]
+    public async Task ContextItemsIsCommandExecutedTest2()
+    {
+        var firstAssertion = (UpdateContext context) =>
+        {
+            context.Items.Should().ContainKey(CommandHandlerBase.IsCommandExecuted);
+            context.Items["IsCommandExecuted"].As<bool>().Should().BeFalse();
+            context.Items.Should().ContainKey(CommandHandlerBase.CommandName);
+            context.Items["CommandName"].As<string>().Should().Be("sum");
+        };
+        var finalAssertion = (UpdateContext context) =>
+        {
+            context.Items.Should().ContainKey(CommandHandlerBase.IsCommandExecuted);
+            context.Items["IsCommandExecuted"].As<bool>().Should().BeTrue();
+            context.Items.Should().ContainKey(CommandHandlerBase.CommandName);
+            context.Items["CommandName"].As<string>().Should().Be("sum");
+        };
+
+        var bot = Utils.CreateTestBot(bot =>
+        {
+            bot.UseHandler<StartCommandHandler>()
+               .AssertContext(firstAssertion)
+               .UseCommand<SumCommandHandler>()
+               .AssertContext(finalAssertion);
+        });
+        var update = UpdateBuilder.WithTextMessage("/sum 1 5").Build();
+        await bot.HandleAndAssertAsync(update, x => x.ShouldSendMessageWithText("6"));
     }
 
     [Test]
@@ -33,9 +77,8 @@ public class CommandHandlerBaseTests
     [Test]
     public async Task WithoutArgsTest()
     {
-        CommandHandlerBase.Prefix = "/";
         var bot = Utils.CreateTestBot(bot => bot.UseHandler<StartCommandHandler>());
         var update = UpdateBuilder.WithTextMessage("/start").Build();
-        await bot.HandleAndAssertAsync(update, x => x.ShouldSendMessageWithText("Hello World!"));
+        await bot.HandleAndAssertAsync(update, x => x.ShouldSendMessageWithText(StartCommandHandler.Message));
     }
 }

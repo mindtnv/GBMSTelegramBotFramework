@@ -10,4 +10,11 @@ public static class BotRegistrationConfiguratorExtensions
         registrationConfigurator.UseTelegramBotClient(new TelegramTestingBotClient());
         return registrationConfigurator;
     }
+
+    public static IBotRegistrationConfigurator AssertContext(this IBotRegistrationConfigurator configurator,
+        Action<UpdateContext> asserter)
+    {
+        configurator.ConfigureUpdatePipeline(x => x.AssertContext(asserter));
+        return configurator;
+    }
 }
