@@ -21,7 +21,9 @@ public abstract class CommandHandlerBase : UpdateHandlerBase
             return ExecuteAsync(context, context.Items[CommandArgs] as string[] ?? throw new ApplicationException());
         }
 
-        context.Items[IsCommandExecuted] = false;
+        if (!context.Items.ContainsKey(IsCommandExecuted))
+            context.Items[IsCommandExecuted] = false;
+
         return Task.CompletedTask;
     }
 
