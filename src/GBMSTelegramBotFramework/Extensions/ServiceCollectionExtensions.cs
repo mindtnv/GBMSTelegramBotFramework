@@ -23,7 +23,7 @@ public static class ServiceCollectionExtensions
         services.AddUpdatePipelineBuilderServices();
         var configurator = new BotRegistrationConfigurator(services);
         configure(configurator);
-        configurator.Configure();
+        configurator.Register();
         return services;
     }
 

@@ -24,15 +24,17 @@ public class CommandHandlerBaseTests
     [Test]
     public async Task WithArgsTest()
     {
-        var bot = Utils.CreateTestBotWithPipeline(p => p.UseHandler<SumCommandHandler>());
-        var update = UpdateBuilder.WithTextMessage("/sum 5 10").Build();
+        CommandHandlerBase.Prefix = "";
+        var bot = Utils.CreateTestBot(bot => bot.UseHandler<SumCommandHandler>());
+        var update = UpdateBuilder.WithTextMessage("sum 5 10").Build();
         await bot.HandleAndAssertAsync(update, x => x.ShouldSendMessageWithText("15"));
     }
 
     [Test]
     public async Task WithoutArgsTest()
     {
-        var bot = Utils.CreateTestBotWithPipeline(p => p.UseHandler<StartCommandHandler>());
+        CommandHandlerBase.Prefix = "/";
+        var bot = Utils.CreateTestBot(bot => bot.UseHandler<StartCommandHandler>());
         var update = UpdateBuilder.WithTextMessage("/start").Build();
         await bot.HandleAndAssertAsync(update, x => x.ShouldSendMessageWithText("Hello World!"));
     }

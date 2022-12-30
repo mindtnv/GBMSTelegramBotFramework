@@ -7,13 +7,13 @@ namespace GBMSTelegramBotFramework.Tests;
 
 public static class Utils
 {
-    public static IBot CreateTestBotWithPipeline(Action<IUpdatePipelineConfigurator> configure)
+    public static IBot CreateTestBot(Action<IBotRegistrationConfigurator> configure)
     {
         var services = new ServiceCollection();
         services.AddTelegramBot(bot =>
         {
             bot.UseTestingClient();
-            bot.ConfigureUpdatePipeline(configure);
+            bot.Configure(configure);
         });
         var provider = services.BuildServiceProvider();
         var bot = provider.GetRequiredService<IBot>();

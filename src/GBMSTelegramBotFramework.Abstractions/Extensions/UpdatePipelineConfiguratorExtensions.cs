@@ -11,4 +11,11 @@ public static class UpdatePipelineConfiguratorExtensions
         configurator.Configure(x => x.UseHandler<THandler>());
         return configurator;
     }
+
+    public static IUpdatePipelineConfigurator UseCommand<TCommand>(this IUpdatePipelineConfigurator configurator)
+        where TCommand : CommandHandlerBase
+    {
+        configurator.UseHandler<TCommand>();
+        return configurator;
+    }
 }

@@ -13,7 +13,7 @@ public class CommandNotFoundHandlerTests
     public async Task ShouldFireNotFound()
     {
         var notFoundText = "Command not found";
-        var bot = Utils.CreateTestBotWithPipeline(p =>
+        var bot = Utils.CreateTestBot(p =>
         {
             p.UseHandler<SumCommandHandler>();
             p.UseCommandNotFoundHandler(notFoundText);
@@ -26,7 +26,7 @@ public class CommandNotFoundHandlerTests
     public async Task ShouldNotFireNotFound()
     {
         var notFoundText = "Command not found";
-        var bot = Utils.CreateTestBotWithPipeline(p =>
+        var bot = Utils.CreateTestBot(p =>
         {
             p.UseHandler<SumCommandHandler>();
             p.UseCommandNotFoundHandler(notFoundText);

@@ -7,6 +7,7 @@ namespace GBMSTelegramBotFramework;
 public class BotRegistrationConfigurator : IBotRegistrationConfigurator
 {
     private readonly BotOptions _botOptions = new();
+    private readonly List<Action<IBotRegistrationConfigurator>> _configurators = new();
     private readonly BotOptionsConfigurator _optionsConfigurator;
     private readonly UpdatePipelineConfigurator _pipelineConfigurator;
     private ITelegramBotClient? _client;
@@ -38,8 +39,17 @@ public class BotRegistrationConfigurator : IBotRegistrationConfigurator
         return this;
     }
 
-    public void Configure()
+    public IBotRegistrationConfigurator Configure(Action<IBotRegistrationConfigurator> configure)
     {
+        _configurators.Add(configure);
+        return this;
+    }
+
+    public void Register()
+    {
+        foreach (var c in _configurators)
+            c(this);
+
         Services.AddSingleton<IBot>(provider =>
         {
             var bot = new Bot(provider)

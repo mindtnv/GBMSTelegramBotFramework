@@ -9,5 +9,6 @@ public interface IBotRegistrationConfigurator
     IBotRegistrationConfigurator UseTelegramBotClient(ITelegramBotClient telegramBotClient);
     IBotRegistrationConfigurator ConfigureUpdatePipeline(Action<IUpdatePipelineConfigurator> configure);
     IBotRegistrationConfigurator ConfigureOptions(Action<IBotOptionsConfigurator> configure);
-    void Configure();
+    IBotRegistrationConfigurator Configure(Action<IBotRegistrationConfigurator> configure);
+    void Register();
 }

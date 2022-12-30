@@ -5,6 +5,7 @@ public abstract class CommandHandlerBase : UpdateHandlerBase
     public static readonly string CommandName = "CommandName";
     public static readonly string CommandArgs = "CommandArgs";
     public static readonly string IsCommandExecuted = "IsCommandExecuted";
+    public static string Prefix { get; set; } = "/";
     public abstract string Name { get; }
     public abstract Task ExecuteAsync(UpdateContext context, string[] args);
 
@@ -33,10 +34,13 @@ public abstract class CommandHandlerBase : UpdateHandlerBase
                 return false;
 
             var token = text.AsSpan();
-            if (token.Length == 0 || token[0] != '/')
+            if (token.Length == 0)
                 return false;
 
-            token = token[1..];
+            if (!token.StartsWith(Prefix))
+                return false;
+
+            token = token.Slice(Prefix.Length);
             var haveArgs = token.IndexOf(' ') is var argsIndex && argsIndex > 0;
             var args = Array.Empty<string>();
             string command;

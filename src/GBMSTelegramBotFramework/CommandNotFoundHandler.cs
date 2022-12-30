@@ -18,9 +18,7 @@ public class CommandNotFoundHandler : UpdateHandlerBase
         if (context.Items.ContainsKey(CommandHandlerBase.CommandName) &&
             context.Items.TryGetValue(CommandHandlerBase.IsCommandExecuted, out var isCommandExecuted)
             && isCommandExecuted is false)
-        {
             return context.Bot.Client.SendTextMessageAsync(context.Update.Message!.Chat.Id, _options.Message);
-        }
 
         return Task.CompletedTask;
     }

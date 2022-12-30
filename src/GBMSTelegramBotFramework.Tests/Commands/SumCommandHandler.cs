@@ -11,8 +11,8 @@ public class SumCommandHandler : CommandHandlerBase
     {
         var sum = args switch
         {
-            [var a, var b, ] => Int32.Parse(a) + Int32.Parse(b),
-            [var a]          => Int32.Parse(a),
+            [var a, var b, ] => int.Parse(a) + int.Parse(b),
+            [var a]          => int.Parse(a),
             _                => 0,
         };
 
