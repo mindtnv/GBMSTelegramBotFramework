@@ -1,11 +1,11 @@
-﻿namespace GBMSTelegramBotFramework.Abstractions;
+﻿using Telegram.Bot;
+
+namespace GBMSTelegramBotFramework.Abstractions;
 
 public interface IBot
 {
+    IServiceProvider Services { get; }
     BotOptions Options { get; }
-    Type UpdateHandlerType { get; }
-}
-
-public interface IBot<THandler> : IBot where THandler : IUpdateHandler
-{
+    ITelegramBotClient Client { get; }
+    UpdateDelegate UpdateHandler { get; }
 }
