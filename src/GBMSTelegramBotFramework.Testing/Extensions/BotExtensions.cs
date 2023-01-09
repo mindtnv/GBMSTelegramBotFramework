@@ -10,6 +10,11 @@ public static class BotExtensions
         Action<ITelegramRequestsAsserter> assertAction)
     {
         await bot.HandleUpdateAsync(update);
+        bot.Assert(assertAction);
+    }
+
+    public static void Assert(this IBot bot, Action<ITelegramRequestsAsserter> assertAction)
+    {
         var client = bot.Client as TelegramTestingBotClient ??
                      throw new InvalidOperationException("Client is not TelegramTestingBotClient");
         var asserter = new TelegramRequestsAsserter(client.Requests);

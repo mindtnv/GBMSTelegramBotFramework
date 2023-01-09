@@ -74,7 +74,7 @@ public class UpdatePipelineBuilderTests
     {
         var context = new Mock<UpdateContext>();
         var services = new ServiceCollection();
-        services.AddSingleton<Counter>();
+        services.AddSingleton<TestingCounter>();
         services.AddSingleton<IUpdateMiddlewareFactory, UpdateMiddlewareFactory>();
         services.AddTransient<TestMiddleware>();
         var provider = services.BuildServiceProvider();
@@ -84,7 +84,7 @@ public class UpdatePipelineBuilderTests
             builder.UseMiddleware(typeof(TestMiddleware));
         var handler = builder.Build();
         await handler(context.Object);
-        var counter = provider.GetRequiredService<Counter>();
+        var counter = provider.GetRequiredService<TestingCounter>();
         Assert.AreEqual(2 + n, counter.Value);
     }
 
@@ -98,7 +98,7 @@ public class UpdatePipelineBuilderTests
         services.TryAddSingleton<IUpdateContextFactory, UpdateContextFactory>();
         services.TryAdd(ServiceDescriptor.Transient(typeof(UpdateHandlerMiddleware<>),
             typeof(UpdateHandlerMiddleware<>)));
-        services.AddSingleton<Counter>();
+        services.AddSingleton<TestingCounter>();
         services.AddTransient<TestHandler>();
         var provider = services.BuildServiceProvider();
         var builder = new UpdatePipelineBuilder(provider);
@@ -106,43 +106,38 @@ public class UpdatePipelineBuilderTests
             builder.UseHandler<TestHandler>();
         var handler = builder.Build();
         await handler(context.Object);
-        var counter = provider.GetRequiredService<Counter>();
+        var counter = provider.GetRequiredService<TestingCounter>();
         Assert.AreEqual(n, counter.Value);
-    }
-
-    private class Counter
-    {
-        public int Value { get; set; }
     }
 
     private class TestMiddleware : IUpdateMiddleware
     {
-        private readonly Counter _counter;
+        private readonly TestingCounter _testingCounter;
 
-        public TestMiddleware(Counter counter)
+        public TestMiddleware(TestingCounter testingCounter)
         {
-            _counter = counter;
+            _testingCounter = testingCounter;
         }
 
         public Task HandleUpdateAsync(UpdateContext context, UpdateDelegate next)
         {
-            _counter.Value++;
+            _testingCounter.Value++;
             return next(context);
         }
     }
 
     private class TestHandler : IUpdateHandler
     {
-        private readonly Counter _counter;
+        private readonly TestingCounter _testingCounter;
 
-        public TestHandler(Counter counter)
+        public TestHandler(TestingCounter testingCounter)
         {
-            _counter = counter;
+            _testingCounter = testingCounter;
         }
 
         public Task HandleUpdateAsync(UpdateContext context)
         {
-            _counter.Value++;
+            _testingCounter.Value++;
             return Task.CompletedTask;
         }
     }

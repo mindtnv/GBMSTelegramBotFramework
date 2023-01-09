@@ -11,6 +11,7 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<IUpdateMiddlewareFactory, UpdateMiddlewareFactory>();
         services.TryAddSingleton<IUpdateHandlerFactory, UpdateHandlerFactory>();
         services.TryAddSingleton<IUpdateContextFactory, UpdateContextFactory>();
+        services.TryAddSingleton<ICrossRequestContextStore, CrossRequestContextStore>();
         services.TryAddSingleton<IBotProvider, BotProvider>();
         services.TryAdd(ServiceDescriptor.Transient(typeof(UpdateHandlerMiddleware<>),
             typeof(UpdateHandlerMiddleware<>)));

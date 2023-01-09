@@ -8,4 +8,5 @@ public class UpdateContext
     public IBot Bot { get; set; } = null!;
     public Update Update { get; set; } = null!;
     public IDictionary<object, object> Items => _items.Value;
+    public ICrossRequestContext CrossRequestContext { get; set; }
 }
