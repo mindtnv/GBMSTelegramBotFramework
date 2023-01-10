@@ -10,4 +10,10 @@ public static class BotRegistrationConfiguratorExtensions
         configurator.ConfigureUpdatePipeline(p => p.UseCommandNotFoundHandler(message));
         return configurator;
     }
+
+    public static IBotRegistrationConfigurator UseReadMiddleware(this IBotRegistrationConfigurator configurator)
+    {
+        configurator.ConfigureUpdatePipeline(p => p.UseReadMiddleware());
+        return configurator;
+    }
 }

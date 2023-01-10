@@ -18,4 +18,9 @@ public class CrossRequestContext : ICrossRequestContext
     {
         _items[typeof(T)] = item ?? throw new ArgumentNullException(nameof(item));
     }
+
+    public void Remove<T>() where T : class
+    {
+        _items.Remove(typeof(T));
+    }
 }

@@ -19,6 +19,6 @@ public class UpdateContextFactory : IUpdateContextFactory
             Bot = bot,
             Update = update,
             CrossRequestContext =
-                _crossRequestContextStore.Get(update.GetUserId() ?? throw new ArgumentNullException()),
+                _crossRequestContextStore.Get(update.GetFlowId() ?? throw new ArgumentNullException()),
         });
 }

@@ -4,6 +4,14 @@ namespace GBMSTelegramBotFramework.Abstractions.Extensions;
 
 public static class UpdatePipelineConfiguratorExtensions
 {
+    public static IUpdatePipelineConfigurator UseMiddleware<TMiddleware>(this IUpdatePipelineConfigurator configurator)
+        where TMiddleware : IUpdateMiddleware
+    {
+        configurator.Services.AddTransient(typeof(TMiddleware));
+        configurator.Configure(x => x.UseMiddleware<TMiddleware>());
+        return configurator;
+    }
+
     public static IUpdatePipelineConfigurator UseHandler<THandler>(this IUpdatePipelineConfigurator configurator)
         where THandler : IUpdateHandler
     {

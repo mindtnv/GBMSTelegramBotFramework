@@ -5,7 +5,7 @@ namespace GBMSTelegramBotFramework.Abstractions.Extensions;
 
 public static class UpdateExtensions
 {
-    public static long? GetUserId(this Update update)
+    public static long? GetFlowId(this Update update)
     {
         return update.Type switch
         {

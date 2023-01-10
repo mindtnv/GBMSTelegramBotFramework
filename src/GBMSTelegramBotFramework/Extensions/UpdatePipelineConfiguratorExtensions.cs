@@ -13,4 +13,10 @@ public static class UpdatePipelineConfiguratorExtensions
         configurator.UseHandler<CommandNotFoundHandler>();
         return configurator;
     }
+
+    public static IUpdatePipelineConfigurator UseReadMiddleware(this IUpdatePipelineConfigurator configurator)
+    {
+        configurator.UseMiddleware<ReadMiddleware>();
+        return configurator;
+    }
 }
