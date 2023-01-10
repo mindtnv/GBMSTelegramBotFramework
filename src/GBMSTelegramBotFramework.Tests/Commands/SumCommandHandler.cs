@@ -11,9 +11,9 @@ public class SumCommandHandler : CommandHandlerBase
     {
         var sum = args switch
         {
-            [var a, var b, ] => int.Parse(a) + int.Parse(b),
-            [var a]          => int.Parse(a),
-            _                => 0,
+            [var a, var b] => int.Parse(a) + int.Parse(b),
+            [var a]        => int.Parse(a),
+            _              => 0,
         };
 
         return context.Bot.Client.SendTextMessageAsync(context.Update.Message.Chat.Id, sum.ToString());

@@ -6,11 +6,11 @@ namespace GBMSTelegramBotFramework;
 
 public class UpdateContextFactory : IUpdateContextFactory
 {
-    private readonly ICrossRequestContextStore _crossRequestContextStore;
+    private readonly ICrossRequestContextStoreProvider _contextStoreProvider;
 
-    public UpdateContextFactory(ICrossRequestContextStore crossRequestContextStore)
+    public UpdateContextFactory(ICrossRequestContextStoreProvider contextStoreProvider)
     {
-        _crossRequestContextStore = crossRequestContextStore;
+        _contextStoreProvider = contextStoreProvider;
     }
 
     public Task<UpdateContext> CreateAsync(IBot bot, Update update) =>
@@ -18,7 +18,9 @@ public class UpdateContextFactory : IUpdateContextFactory
         {
             Bot = bot,
             Update = update,
-            CrossRequestContext =
-                _crossRequestContextStore.Get(update.GetFlowId() ?? throw new ArgumentNullException()),
+            CrossRequestContext = _contextStoreProvider
+                                  .Get(bot.Options.Name ?? throw new InvalidCastException("Bot name is null"))
+                                  .Get(update.GetFromId() ??
+                                       throw new ArgumentNullException()),
         });
 }

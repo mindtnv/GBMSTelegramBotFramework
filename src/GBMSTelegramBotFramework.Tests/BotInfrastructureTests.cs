@@ -17,6 +17,7 @@ public class BotInfrastructureTests
         var services = new ServiceCollection();
         services.AddTelegramBot(x =>
         {
+            x.ConfigureOptions(o => o.WithName(""));
             x.UseTestingClient();
             x.ConfigureUpdatePipeline(xx => { xx.UseHandler<ReplyWithMessageHandler>(); });
         });

@@ -12,6 +12,7 @@ public static class Utils
         var services = new ServiceCollection();
         services.AddTelegramBot(bot =>
         {
+            bot.ConfigureOptions(x => { x.WithName("testing-bot"); });
             bot.UseTestingClient();
             bot.Configure(configure);
         });
