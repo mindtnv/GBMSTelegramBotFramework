@@ -1,10 +1,11 @@
-﻿using GBMSTelegramBotFramework.Abstractions;
+﻿using System.Collections.Concurrent;
+using GBMSTelegramBotFramework.Abstractions;
 
 namespace GBMSTelegramBotFramework;
 
 public class CrossRequestContext : ICrossRequestContext
 {
-    private readonly Dictionary<Type, object> _items = new();
+    private readonly ConcurrentDictionary<Type, object> _items = new();
 
     public T? Get<T>() where T : class
     {
@@ -21,6 +22,6 @@ public class CrossRequestContext : ICrossRequestContext
 
     public void Remove<T>() where T : class
     {
-        _items.Remove(typeof(T));
+        _items.Remove(typeof(T), out _);
     }
 }

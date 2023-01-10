@@ -1,10 +1,12 @@
-﻿using GBMSTelegramBotFramework.Abstractions;
+﻿using System.Collections.Concurrent;
+using GBMSTelegramBotFramework.Abstractions;
 
 namespace GBMSTelegramBotFramework;
 
 public class CrossRequestContextStoreProvider : ICrossRequestContextStoreProvider
 {
-    private readonly Dictionary<string, ICrossRequestContextStore> _stores = new(StringComparer.OrdinalIgnoreCase);
+    private readonly ConcurrentDictionary<string, ICrossRequestContextStore> _stores =
+        new(StringComparer.OrdinalIgnoreCase);
 
     public ICrossRequestContextStore Get(string botName)
     {
@@ -12,7 +14,7 @@ public class CrossRequestContextStoreProvider : ICrossRequestContextStoreProvide
             return store;
 
         store = new CrossRequestContextStore();
-        _stores.Add(botName, store);
+        _stores.TryAdd(botName, store);
 
         return store;
     }
