@@ -13,6 +13,7 @@ public static class ServiceCollectionExtensions
         services.TryAddSingleton<IUpdateContextFactory, UpdateContextFactory>();
         services.TryAddSingleton<ICrossRequestContextStoreProvider, CrossRequestContextStoreProvider>();
         services.TryAddSingleton<ICrossRequestContextStore, CrossRequestContextStore>();
+        services.TryAddSingleton<IUserIdResolver, InMemoryUserIdResolver>();
         services.TryAddTransient<StopMiddleware>();
         services.TryAddSingleton<IBotProvider, BotProvider>();
         services.TryAdd(ServiceDescriptor.Transient(typeof(UpdateHandlerMiddleware<>),
