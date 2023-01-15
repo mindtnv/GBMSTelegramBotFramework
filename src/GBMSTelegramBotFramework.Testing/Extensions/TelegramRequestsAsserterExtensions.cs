@@ -17,11 +17,10 @@ public static class TelegramRequestsAsserterExtensions
     }
 
     public static ITelegramRequestsAsserter ShouldSendMessageWithText(this ITelegramRequestsAsserter asserter,
-        string text, int chatId)
+        string text, long chatId)
     {
         asserter.ShouldSendMessageWithText(text)
-                .GoToNextRequest()
-                .AssertRequest(r => r.As<SendMessageRequest>().ChatId.Should().Be(chatId));
+                .AssertRequest(r => r.As<SendMessageRequest>().ChatId.Identifier.Should().Be(chatId));
         return asserter;
     }
 

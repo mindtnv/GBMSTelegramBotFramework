@@ -14,7 +14,7 @@ public class UpdateMiddlewareFactory : IUpdateMiddlewareFactory
 
     public IUpdateMiddleware Create(Type updateMiddlewareType)
     {
-        var middleware = _serviceProvider.GetRequiredService(updateMiddlewareType);
-        return (middleware as IUpdateMiddleware)!;
+        var middleware = (_serviceProvider.GetRequiredService(updateMiddlewareType) as IUpdateMiddleware)!;
+        return middleware;
     }
 }

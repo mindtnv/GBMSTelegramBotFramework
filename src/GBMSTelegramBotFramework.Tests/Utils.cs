@@ -16,7 +16,10 @@ public static class Utils
             bot.UseTestingClient();
             bot.Configure(configure);
         });
-        var provider = services.BuildServiceProvider();
+        var provider = services.BuildServiceProvider(new ServiceProviderOptions
+        {
+            ValidateScopes = true,
+        });
         var bot = provider.GetRequiredService<IBot>();
         return bot;
     }
