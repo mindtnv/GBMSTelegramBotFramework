@@ -8,14 +8,14 @@ public static class ServiceCollectionExtensions
 {
     private static IServiceCollection AddUpdatePipelineBuilderServices(this IServiceCollection services)
     {
-        services.TryAddSingleton<IUpdateMiddlewareFactory, UpdateMiddlewareFactory>();
-        services.TryAddSingleton<IUpdateHandlerFactory, UpdateHandlerFactory>();
+        services.TryAddScoped<IUpdateMiddlewareFactory, UpdateMiddlewareFactory>();
+        services.TryAddScoped<IUpdateHandlerFactory, UpdateHandlerFactory>();
         services.TryAddSingleton<IBotContextFactory, BotContextFactory>();
         services.TryAddSingleton<IUpdateContextFactory, UpdateContextFactory>();
         services.TryAddSingleton<ICrossRequestContextStoreProvider, CrossRequestContextStoreProvider>();
         services.TryAddSingleton<IChatIdResolverStore, InMemoryChatIdResolverStore>();
         services.TryAddScoped<StopMiddleware>();
-        services.TryAddScoped<UserIdResolverMiddleware>();
+        services.TryAddScoped<ChatIdResolverMiddleware>();
         services.TryAddSingleton<IBotProvider, BotProvider>();
         services.TryAdd(ServiceDescriptor.Scoped(typeof(UpdateHandlerMiddleware<>),
             typeof(UpdateHandlerMiddleware<>)));

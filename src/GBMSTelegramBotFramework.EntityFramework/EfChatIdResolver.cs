@@ -1,4 +1,5 @@
-﻿using GBMSTelegramBotFramework.Abstractions;
+﻿using System.Diagnostics;
+using GBMSTelegramBotFramework.Abstractions;
 using GBMSTelegramBotFramework.EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +20,10 @@ public class EfChatIdResolver : IChatIdResolver
     public async Task<long> GetChatIdAsync(long userId)
     {
         if (await _hash.ContainsCorrelationAsync(userId))
+        {
+            Debug.Print($"Find chatId for {userId} in hash");
             return await _hash.GetChatIdAsync(userId);
+        }
 
         var correlation = await _context.UserIdCorrelations.FirstOrDefaultAsync(x =>
             x.UserId == userId && x.BotName == _botName);
@@ -45,9 +49,16 @@ public class EfChatIdResolver : IChatIdResolver
 
     public async Task<bool> ContainsCorrelationAsync(long userId)
     {
-        if (!await _hash.ContainsCorrelationAsync(userId))
-            return await _context.UserIdCorrelations.AnyAsync(x => x.UserId == userId);
+        if (await _hash.ContainsCorrelationAsync(userId))
+            return true;
 
+        var correlation =
+            await _context.UserIdCorrelations.FirstOrDefaultAsync(x => x.UserId == userId && x.BotName == _botName);
+
+        if (correlation == null)
+            return false;
+
+        await _hash.AddCorrelationAsync(userId, correlation!.ChatId);
         return true;
     }
 }

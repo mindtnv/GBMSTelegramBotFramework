@@ -63,7 +63,7 @@ public class BotRegistrationConfigurator : IBotRegistrationConfigurator
             // Configure UpdatePipeline
             var updatePipelineBuilder = new UpdatePipelineBuilder(provider);
             updatePipelineBuilder.UseMiddleware(typeof(StopMiddleware));
-            updatePipelineBuilder.UseMiddleware(typeof(UserIdResolverMiddleware));
+            // updatePipelineBuilder.UseMiddleware(typeof(UserIdResolverMiddleware));
             _pipelineConfigurator.ConfigureBuilder(updatePipelineBuilder);
             bot.UpdateHandler = updatePipelineBuilder.Build();
 

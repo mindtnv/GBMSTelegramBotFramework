@@ -40,11 +40,11 @@ public static class UpdateContextSendExtensions
         IReplyMarkup? replyMarkup = default,
         CancellationToken cancellationToken = default)
     {
-        await using var scope = context.Bot.Services.CreateAsyncScope();
+        await using var scope = context.Services.CreateAsyncScope();
         var resolver = scope.ServiceProvider.GetRequiredService<IChatIdResolverStore>()
-                            .GetResolver(context.Bot.Options.Name!);
+                            .GetResolver(context.BotContext.Options.Name!);
         var chatId = await resolver.GetChatIdAsync(userId);
-        await context.Bot.Client.SendTextMessageAsync(chatId, text, parseMode, entities, disableWebPagePreview,
+        await context.BotContext.Client.SendTextMessageAsync(chatId, text, parseMode, entities, disableWebPagePreview,
             disableNotification, protectContent, replyToMessageId, allowSendingWithoutReply, replyMarkup,
             cancellationToken);
     }

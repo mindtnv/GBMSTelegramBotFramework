@@ -70,9 +70,9 @@ public class SendMessageToUserIdCommand : CommandHandlerBase
 
     public override async Task ExecuteAsync(UpdateContext context, string[] args)
     {
-        var chatIdResolver = _resolverStore.GetResolver(context.Bot.Options.Name!);
+        var chatIdResolver = _resolverStore.GetResolver(context.BotContext.Options.Name!);
         var chatId = await chatIdResolver.GetChatIdAsync(context.Update.GetFromId()!.Value);
-        await context.Bot.Client.SendTextMessageAsync(chatId, Message);
+        await context.BotContext.Client.SendTextMessageAsync(chatId, Message);
     }
 }
 

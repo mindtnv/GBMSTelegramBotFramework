@@ -8,8 +8,8 @@ public static class BotRegistrationConfiguratorExtensions
     public static IBotRegistrationConfigurator UseEfChatIdResolver<TContext>(
         this IBotRegistrationConfigurator configurator) where TContext : DbBotContext
     {
-        configurator.Services.AddTransient<IChatIdResolverStore, EfChatIdResolverStore>();
-        configurator.Services.AddTransient<DbBotContext, TContext>();
+        configurator.Services.AddSingleton<IChatIdResolverStore, EfChatIdResolverStore>();
+        configurator.Services.AddScoped<DbBotContext, TContext>();
         return configurator;
     }
 }

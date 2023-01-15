@@ -9,12 +9,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\GBMSTelegramBotFramework.Abstractions\GBMSTelegramBotFramework.Abstractions.csproj" />
-        <ProjectReference Include="..\GBMSTelegramBotFramework\GBMSTelegramBotFramework.csproj" />
+        <ProjectReference Include="..\GBMSTelegramBotFramework.Abstractions\GBMSTelegramBotFramework.Abstractions.csproj"/>
+        <ProjectReference Include="..\GBMSTelegramBotFramework\GBMSTelegramBotFramework.csproj"/>
     </ItemGroup>
 
 </Project>
