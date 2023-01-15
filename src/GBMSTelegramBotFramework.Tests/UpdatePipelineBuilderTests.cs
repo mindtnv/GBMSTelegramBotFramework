@@ -1,8 +1,10 @@
 using GBMSTelegramBotFramework.Abstractions;
 using GBMSTelegramBotFramework.Abstractions.Extensions;
+using GBMSTelegramBotFramework.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
+using Telegram.Bot.Types;
 
 namespace GBMSTelegramBotFramework.Tests;
 
@@ -16,7 +18,7 @@ public class UpdatePipelineBuilderTests
     [Test]
     public async Task DontFallWithEmptyPipeline()
     {
-        var context = new Mock<UpdateContext>();
+        var context = new Mock<TestingUpdateContext>();
         var provider = new Mock<IServiceProvider>();
         var handler = new UpdatePipelineBuilder(provider.Object).Build();
         await handler(context.Object);
@@ -25,7 +27,7 @@ public class UpdatePipelineBuilderTests
     [Test]
     public async Task UseTest([Random(5, 50, 5)] int n)
     {
-        var context = new Mock<UpdateContext>();
+        var context = new Mock<TestingUpdateContext>();
         var provider = new Mock<IServiceProvider>();
         var builder = new UpdatePipelineBuilder(provider.Object);
         var counter = 0;
@@ -38,13 +40,13 @@ public class UpdatePipelineBuilderTests
 
         var handler = builder.Build();
         await handler(context.Object);
-        Assert.AreEqual(n, counter);
+        Assert.That(counter, Is.EqualTo(n));
     }
 
     [Test]
     public async Task UseFuncMiddlewareTest([Random(5, 50, 5)] int n)
     {
-        var context = new Mock<UpdateContext>();
+        var context = new Mock<TestingUpdateContext>();
         var provider = new Mock<IServiceProvider>();
         var builder = new UpdatePipelineBuilder(provider.Object);
         var arr = new bool[n];
@@ -66,32 +68,32 @@ public class UpdatePipelineBuilderTests
 
         var handler = builder.Build();
         await handler(context.Object);
-        Assert.IsTrue(arr.All(x => x));
+        Assert.That(arr.All(x => x), Is.True);
     }
 
     [Test]
     public async Task UseMiddlewareTest([Random(5, 50, 5)] int n)
     {
-        var context = new Mock<UpdateContext>();
         var services = new ServiceCollection();
         services.AddSingleton<TestingCounter>();
         services.AddSingleton<IUpdateMiddlewareFactory, UpdateMiddlewareFactory>();
         services.AddTransient<TestMiddleware>();
         var provider = services.BuildServiceProvider();
+        var context = new TestingUpdateContext(provider, new Mock<Update>().Object,
+            new Mock<BotContext>().Object, new Mock<ICrossRequestContext>().Object);
         var builder = new UpdatePipelineBuilder(provider);
         builder.UseMiddleware(typeof(TestMiddleware)).UseMiddleware<TestMiddleware>();
         for (var i = 0; i < n; i++)
             builder.UseMiddleware(typeof(TestMiddleware));
         var handler = builder.Build();
-        await handler(context.Object);
+        await handler(context);
         var counter = provider.GetRequiredService<TestingCounter>();
-        Assert.AreEqual(2 + n, counter.Value);
+        Assert.That(counter.Value, Is.EqualTo(2 + n));
     }
 
     [Test]
     public async Task UseHandlerTest([Random(5, 50, 5)] int n)
     {
-        var context = new Mock<UpdateContext>();
         var services = new ServiceCollection();
         services.TryAddSingleton<IUpdateMiddlewareFactory, UpdateMiddlewareFactory>();
         services.TryAddSingleton<IUpdateHandlerFactory, UpdateHandlerFactory>();
@@ -101,13 +103,15 @@ public class UpdatePipelineBuilderTests
         services.AddSingleton<TestingCounter>();
         services.AddTransient<TestHandler>();
         var provider = services.BuildServiceProvider();
+        var context = new TestingUpdateContext(provider, new Mock<Update>().Object,
+            new Mock<BotContext>().Object, new Mock<ICrossRequestContext>().Object);
         var builder = new UpdatePipelineBuilder(provider);
         for (var i = 0; i < n; i++)
             builder.UseHandler<TestHandler>();
         var handler = builder.Build();
-        await handler(context.Object);
+        await handler(context);
         var counter = provider.GetRequiredService<TestingCounter>();
-        Assert.AreEqual(n, counter.Value);
+        Assert.That(counter.Value, Is.EqualTo(n));
     }
 
     private class TestMiddleware : IUpdateMiddleware

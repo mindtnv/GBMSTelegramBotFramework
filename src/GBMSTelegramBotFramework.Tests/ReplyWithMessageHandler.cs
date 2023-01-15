@@ -8,6 +8,6 @@ public class ReplyWithMessageHandler : UpdateHandlerBase
     public override async Task OnMessageAsync(UpdateContext context)
     {
         var message = context.Update.Message;
-        await context.Bot.Client.SendTextMessageAsync(message!.Chat.Id, message.Text!);
+        await context.BotContext.Client.SendTextMessageAsync(message!.Chat.Id, message.Text!);
     }
 }

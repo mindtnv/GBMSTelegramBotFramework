@@ -12,6 +12,6 @@ public class SumReadCommandHandler : CommandHandlerBase
     {
         var a = int.Parse(await context.ReadMessageAsync());
         var b = int.Parse(await context.ReadMessageAsync());
-        await context.Bot.Client.SendTextMessageAsync(context.Update.Message!.Chat.Id, (a + b).ToString());
+        await context.BotContext.Client.SendTextMessageAsync(context.Update.Message!.Chat.Id, (a + b).ToString());
     }
 }

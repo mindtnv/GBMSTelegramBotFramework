@@ -21,7 +21,7 @@ public static class UpdateContextSendExtensions
         CancellationToken cancellationToken = default)
     {
         var chatId = context.Update.GetChatId() ?? throw new InvalidOperationException("Cannot get ChatId from Update");
-        return context.Bot.Client.SendTextMessageAsync(chatId, text, parseMode, entities, disableWebPagePreview,
+        return context.BotContext.Client.SendTextMessageAsync(chatId, text, parseMode, entities, disableWebPagePreview,
             disableNotification, protectContent, replyToMessageId, allowSendingWithoutReply, replyMarkup,
             cancellationToken);
     }

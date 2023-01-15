@@ -10,5 +10,6 @@ public static class BotExtensions
         var contextFactory = bot.Services.GetRequiredService<IUpdateContextFactory>();
         var context = await contextFactory.CreateAsync(bot, update);
         await bot.UpdateHandler(context);
+        context.Dispose();
     }
 }

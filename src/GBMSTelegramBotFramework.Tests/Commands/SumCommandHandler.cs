@@ -16,6 +16,6 @@ public class SumCommandHandler : CommandHandlerBase
             _              => 0,
         };
 
-        return context.Bot.Client.SendTextMessageAsync(context.Update.Message.Chat.Id, sum.ToString());
+        return context.BotContext.Client.SendTextMessageAsync(context.Update.Message.Chat.Id, sum.ToString());
     }
 }

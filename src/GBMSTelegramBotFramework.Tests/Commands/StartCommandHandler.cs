@@ -11,6 +11,6 @@ public class StartCommandHandler : CommandHandlerBase
     public override Task ExecuteAsync(UpdateContext context, string[] args)
     {
         var message = context.Update.Message;
-        return context.Bot.Client.SendTextMessageAsync(message.Chat.Id, Message);
+        return context.BotContext.Client.SendTextMessageAsync(message.Chat.Id, Message);
     }
 }

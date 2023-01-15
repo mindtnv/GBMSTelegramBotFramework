@@ -14,7 +14,7 @@ public static class UpdatePipelineBuilderExtensions
     {
         return builder.Use((context, next) =>
         {
-            var factory = builder.Services.GetRequiredService<IUpdateMiddlewareFactory>();
+            var factory = context.Services.GetRequiredService<IUpdateMiddlewareFactory>();
             var middleware = factory.Create(updateMiddlewareType);
             return middleware.HandleUpdateAsync(context, next);
         });
@@ -23,7 +23,4 @@ public static class UpdatePipelineBuilderExtensions
     public static IUpdatePipelineBuilder UseMiddleware<TMiddleware>(this IUpdatePipelineBuilder builder)
         where TMiddleware : IUpdateMiddleware =>
         builder.UseMiddleware(typeof(TMiddleware));
-
-    public static IUpdatePipelineBuilder UseHandler<THandler>(this IUpdatePipelineBuilder builder)
-        where THandler : IUpdateHandler => builder.UseMiddleware<UpdateHandlerMiddleware<THandler>>();
 }

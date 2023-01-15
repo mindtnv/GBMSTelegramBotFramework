@@ -17,6 +17,7 @@ public class IncrementCommand : CommandHandlerBase
         }
 
         counter.Increment();
-        return context.Bot.Client.SendTextMessageAsync(context.Update.Message!.Chat.Id, counter.Value.ToString());
+        return context.BotContext.Client.SendTextMessageAsync(context.Update.Message!.Chat.Id,
+            counter.Value.ToString());
     }
 }
