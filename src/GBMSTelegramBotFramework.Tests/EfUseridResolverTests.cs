@@ -22,6 +22,7 @@ public class EfUseridResolverTests
         services.AddTelegramBot(bot =>
         {
             bot.ConfigureOptions(o => o.WithName("test-bot"));
+            bot.UseMiddleware<ChatIdResolverMiddleware>();
             bot.UseEfChatIdResolver<TestDbBotContext>();
             bot.UseCommand<StartCommandHandler>();
             bot.UseCommand<SendMessageToUserIdCommand>();

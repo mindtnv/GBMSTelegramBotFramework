@@ -10,6 +10,10 @@ public static class UpdatePipelineBuilderExtensions
         return builder.Use(next => context => middleware(context, next));
     }
 
+    public static IUpdatePipelineBuilder UseMiddleware<TMiddleware>(this IUpdatePipelineBuilder builder,
+        TMiddleware instance) where TMiddleware : IUpdateMiddleware =>
+        builder.Use(instance.HandleUpdateAsync);
+
     public static IUpdatePipelineBuilder UseMiddleware(this IUpdatePipelineBuilder builder, Type updateMiddlewareType)
     {
         return builder.Use((context, next) =>

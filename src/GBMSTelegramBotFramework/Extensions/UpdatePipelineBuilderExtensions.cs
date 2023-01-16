@@ -7,4 +7,11 @@ public static class UpdatePipelineBuilderExtensions
 {
     public static IUpdatePipelineBuilder UseHandler<THandler>(this IUpdatePipelineBuilder builder)
         where THandler : IUpdateHandler => builder.UseMiddleware<UpdateHandlerMiddleware<THandler>>();
+
+    public static IUpdatePipelineBuilder UseHandler<THandler>(this IUpdatePipelineBuilder builder, THandler instance)
+        where THandler : IUpdateHandler => builder.Use(async (ctx, next) =>
+    {
+        await instance.HandleUpdateAsync(ctx);
+        await next(ctx);
+    });
 }

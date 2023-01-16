@@ -3,9 +3,10 @@ using Telegram.Bot;
 
 namespace GBMSTelegramBotFramework.Abstractions;
 
-public interface IBotRegistrationConfigurator
+public interface IBotRegistrationConfigurator : IUpdatePipelineConfigurator
 {
     IServiceCollection Services { get; }
+    IBotOnConfigurator On { get; }
     IBotRegistrationConfigurator UseTelegramBotClient(ITelegramBotClient telegramBotClient);
     IBotRegistrationConfigurator ConfigureUpdatePipeline(Action<IUpdatePipelineConfigurator> configure);
     IBotRegistrationConfigurator ConfigureOptions(Action<IBotOptionsConfigurator> configure);

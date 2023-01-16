@@ -16,10 +16,12 @@ public class BotRegistrationConfigurator : IBotRegistrationConfigurator
     public BotRegistrationConfigurator(IServiceCollection services)
     {
         Services = services;
+        On = new DefaultBotOnConfigurator(this);
         _pipelineConfigurator = new UpdatePipelineConfigurator(services);
         _optionsConfigurator = new BotOptionsConfigurator(_botOptions);
     }
 
+    public IBotOnConfigurator On { get; }
     public IServiceCollection Services { get; }
 
     public IBotRegistrationConfigurator UseTelegramBotClient(ITelegramBotClient telegramBotClient)
@@ -71,6 +73,24 @@ public class BotRegistrationConfigurator : IBotRegistrationConfigurator
         });
     }
 
+    IUpdatePipelineConfigurator IUpdatePipelineConfigurator.Configure(Action<IUpdatePipelineBuilder> configure) =>
+        _pipelineConfigurator.Configure(configure);
+
+    void IUpdatePipelineConfigurator.ConfigureBuilder(IUpdatePipelineBuilder builder)
+    {
+        _pipelineConfigurator.ConfigureBuilder(builder);
+    }
+
     private ITelegramBotClient? CreateClientFromOptions(BotOptions options) =>
         options.Token is null ? null : new TelegramBotClient(options.Token);
+
+    private class DefaultBotOnConfigurator : IBotOnConfigurator
+    {
+        public DefaultBotOnConfigurator(IBotRegistrationConfigurator configurator)
+        {
+            Configurator = configurator;
+        }
+
+        public IBotRegistrationConfigurator Configurator { get; }
+    }
 }
