@@ -1,5 +1,6 @@
 ﻿using GBMSTelegramBotFramework.Abstractions;
 using GBMSTelegramBotFramework.Abstractions.Extensions;
+using GBMSTelegramBotFramework.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GBMSTelegramBotFramework.States;
@@ -12,18 +13,13 @@ public class BotStateConfigurator : IBotStateConfigurator
     private string? _name;
     private Func<UpdateContext, Task>? _onEnter;
     private Func<UpdateContext, Task>? _onLeave;
-    private IBotState? _state;
-    private Type? _stateType;
 
-    public BotStateConfigurator(IBotState state, IServiceCollection services) : this(services)
-    {
-        _state = state;
-    }
 
     public BotStateConfigurator(IServiceCollection services)
     {
         Services = services;
         _updatePipelineConfigurator = new UpdatePipelineConfigurator(Services);
+        _updatePipelineConfigurator.UseMiddleware<StopMiddleware>();
         On = _updatePipelineConfigurator.On;
     }
 
@@ -40,13 +36,23 @@ public class BotStateConfigurator : IBotStateConfigurator
 
     public IBotStateConfigurator WithState(IBotState state)
     {
-        _state = state;
+        _onEnter = state.OnEnterAsync;
+        _onLeave = state.OnLeaveAsync;
+        _name = state.Name;
+        _isInitialState = state.IsInitial;
+        state.ConfigureUpdatePipeline(_updatePipelineConfigurator);
         return this;
     }
 
     public IBotStateConfigurator WithState<TState>() where TState : class, IBotState
     {
-        _stateType = typeof(TState);
+        var serviceProvider = Services.BuildServiceProvider();
+        var state = (ActivatorUtilities.CreateInstance(serviceProvider, typeof(TState)) as IBotState)!;
+        _name = state.Name;
+        _onLeave = state.OnLeaveAsync;
+        _onEnter = state.OnEnterAsync;
+        _isInitialState = state.IsInitial;
+        state.ConfigureUpdatePipeline(_updatePipelineConfigurator);
         return this;
     }
 
@@ -82,42 +88,11 @@ public class BotStateConfigurator : IBotStateConfigurator
 
     public BotStateDefinition BuildBotStateDefinition(IServiceProvider serviceProvider)
     {
-        IBotState? stateFromType = null;
-        var name = _name;
-        var isInitial = _isInitialState;
-        var onEnter = _onEnter;
-        var onLeave = _onLeave;
-
-        if (_state is not null)
-        {
-            onEnter = _state.OnEnterAsync;
-            onLeave = _state.OnLeaveAsync;
-            name = _state.Name;
-            isInitial = _state.IsInitial;
-        }
-
-        if (_stateType is not null)
-        {
-            stateFromType = ActivatorUtilities.CreateInstance(serviceProvider, _stateType) as IBotState;
-            name = stateFromType!.Name;
-            onLeave = stateFromType.OnLeaveAsync;
-            onEnter = stateFromType.OnEnterAsync;
-            isInitial = stateFromType.IsInitial;
-        }
-
-        onEnter ??= EmptyCallback;
-        onLeave ??= EmptyCallback;
-        isInitial ??= false;
-        name = name ?? throw new InvalidOperationException("State name is not set");
-
+        var name = _name ?? throw new InvalidOperationException("State name is not set");;
+        var isInitial = _isInitialState ?? false;
+        var onEnter = _onEnter ?? EmptyCallback;
+        var onLeave = _onLeave ?? EmptyCallback;
         var updatePipelineBuilder = new UpdatePipelineBuilder(serviceProvider);
-        updatePipelineBuilder.UseMiddleware(typeof(StopMiddleware));
-
-        if (stateFromType is not null)
-            stateFromType.ConfigureUpdatePipeline(_updatePipelineConfigurator);
-        else
-            _state?.ConfigureUpdatePipeline(_updatePipelineConfigurator);
-
         _updatePipelineConfigurator.ConfigureBuilder(updatePipelineBuilder);
         var updateDelegate = updatePipelineBuilder.Build();
 
@@ -127,7 +102,7 @@ public class BotStateConfigurator : IBotStateConfigurator
             OnEnter = onEnter,
             OnLeave = onLeave,
             UpdateDelegate = updateDelegate,
-            IsInitial = isInitial.Value,
+            IsInitial = isInitial,
         };
     }
 }
