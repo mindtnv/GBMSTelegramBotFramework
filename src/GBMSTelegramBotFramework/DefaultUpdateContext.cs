@@ -9,7 +9,7 @@ internal class DefaultUpdateContext : UpdateContext
     private readonly IServiceScope _scope;
 
     public DefaultUpdateContext(IServiceScope scope, Update update, BotContext botContext,
-        ICrossRequestContext crossRequestContext) : base(scope.ServiceProvider, update, botContext, crossRequestContext)
+        IFeaturesCollection features) : base(scope.ServiceProvider, update, botContext, features)
     {
         _scope = scope;
     }

@@ -6,7 +6,7 @@ public class StateMiddleware : IUpdateMiddleware
 {
     public async Task HandleUpdateAsync(UpdateContext context, UpdateDelegate next)
     {
-        var state = context.CrossRequestContext.Get<StateMiddlewareState>();
+        var state = context.Features.Get<StateMiddlewareState>();
         if (state == null)
         {
             var initialBotState = context.BotContext.Features.Get<IBotStateStore>()!.GetInitialStateDefinition();
@@ -20,7 +20,7 @@ public class StateMiddleware : IUpdateMiddleware
             {
                 CurrentState = initialBotState,
             };
-            context.CrossRequestContext.Set(state);
+            context.Features.Set(state);
         }
 
         await state.CurrentState.UpdateDelegate(context);

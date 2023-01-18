@@ -8,16 +8,16 @@ public abstract class UpdateContext : IDisposable
     public BotContext BotContext { get; set; }
     public Update Update { get; set; }
     public IDictionary<object, object> Items => _items.Value;
-    public ICrossRequestContext CrossRequestContext { get; set; }
+    public IFeaturesCollection Features { get; set; }
     public IServiceProvider Services { get; set; }
 
     protected UpdateContext(IServiceProvider services, Update update, BotContext botContext,
-        ICrossRequestContext crossRequestContext)
+        IFeaturesCollection features)
     {
         Services = services;
         Update = update;
         BotContext = botContext;
-        CrossRequestContext = crossRequestContext;
+        Features = features;
     }
 
     public abstract void Dispose();

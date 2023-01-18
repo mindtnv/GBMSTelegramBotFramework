@@ -6,7 +6,7 @@ public static class UpdateContextExtensions
 {
     public static async Task EnterStateAsync(this UpdateContext updateContext, string stateName)
     {
-        var botState = updateContext.CrossRequestContext.Get<StateMiddleware.StateMiddlewareState>();
+        var botState = updateContext.Features.Get<StateMiddleware.StateMiddlewareState>();
         var stateStore = updateContext.BotContext.Features.Get<IBotStateStore>() ??
                          throw new InvalidOperationException(
                              "You must register at least one state to use this feature");
@@ -19,7 +19,7 @@ public static class UpdateContextExtensions
         else
         {
             botState = new StateMiddleware.StateMiddlewareState();
-            updateContext.CrossRequestContext.Set(botState);
+            updateContext.Features.Set(botState);
         }
 
         botState.CurrentState = nextDefinition;
@@ -28,7 +28,7 @@ public static class UpdateContextExtensions
 
     public static BotStateDefinition? GetCurrentState(this UpdateContext updateContext)
     {
-        var botState = updateContext.CrossRequestContext.Get<StateMiddleware.StateMiddlewareState>();
+        var botState = updateContext.Features.Get<StateMiddleware.StateMiddlewareState>();
         return botState?.CurrentState ?? null;
     }
 

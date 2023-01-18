@@ -7,7 +7,7 @@ public static class UpdateContextExtensions
     public static Task<string> ReadMessageAsync(this UpdateContext context)
     {
         var tcs = new TaskCompletionSource<string>();
-        context.CrossRequestContext.Set(new ReadMiddleware.ReadMiddlewareState
+        context.Features.Set(new ReadMiddleware.ReadMiddlewareState
         {
             TaskCompletionSource = tcs,
         });

@@ -7,12 +7,12 @@ namespace GBMSTelegramBotFramework.Tests;
 public class TestingUpdateContext : UpdateContext
 {
     public TestingUpdateContext(IServiceProvider services, Update update, BotContext botContext,
-        ICrossRequestContext crossRequestContext) : base(services, update, botContext, crossRequestContext)
+        IFeaturesCollection features) : base(services, update, botContext, features)
     {
     }
 
     public TestingUpdateContext() : base(new Mock<IServiceProvider>().Object, new Mock<Update>().Object,
-        new Mock<BotContext>().Object, new Mock<ICrossRequestContext>().Object)
+        new Mock<BotContext>().Object, new Mock<IFeaturesCollection>().Object)
     {
     }
 

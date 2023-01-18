@@ -8,13 +8,10 @@ namespace GBMSTelegramBotFramework;
 public class UpdateContextFactory : IUpdateContextFactory
 {
     private readonly IBotContextFactory _botContextFactory;
-    private readonly ICrossRequestContextStoreProvider _contextStoreProvider;
     private readonly IServiceProvider _serviceProvider;
 
-    public UpdateContextFactory(ICrossRequestContextStoreProvider contextStoreProvider,
-        IServiceProvider serviceProvider, IBotContextFactory botContextFactory)
+    public UpdateContextFactory(IServiceProvider serviceProvider, IBotContextFactory botContextFactory)
     {
-        _contextStoreProvider = contextStoreProvider;
         _serviceProvider = serviceProvider;
         _botContextFactory = botContextFactory;
     }
@@ -23,12 +20,12 @@ public class UpdateContextFactory : IUpdateContextFactory
     {
         var scope = _serviceProvider.CreateScope();
         var botContext = _botContextFactory.Create(bot);
-        var crossRequestContext = _contextStoreProvider
-                                  .Get(bot.Options.Name ?? throw new InvalidCastException("Bot name is null"))
-                                  .Get(update.GetFromId() ??
-                                       throw new ArgumentNullException());
-
-        return Task.FromResult(
-            new DefaultUpdateContext(scope, update, botContext, crossRequestContext) as UpdateContext);
+        var featuresStore = bot.Features.Get<IUpdateContextFeaturesCollectionStore>() ??
+                            throw new InvalidOperationException(
+                                $"Register {nameof(IUpdateContextFeaturesCollectionStore)} to bot's features");
+        var contextFeatures = featuresStore.GetFeaturesCollection(update.GetFromId() ??
+                                                                  throw new InvalidOperationException(
+                                                                      "Can't get user id from update"));
+        return Task.FromResult(new DefaultUpdateContext(scope, update, botContext, contextFeatures) as UpdateContext);
     }
 }

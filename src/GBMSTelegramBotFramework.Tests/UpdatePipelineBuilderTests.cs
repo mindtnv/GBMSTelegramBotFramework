@@ -80,7 +80,7 @@ public class UpdatePipelineBuilderTests
         services.AddTransient<TestMiddleware>();
         var provider = services.BuildServiceProvider();
         var context = new TestingUpdateContext(provider, new Mock<Update>().Object,
-            new Mock<BotContext>().Object, new Mock<ICrossRequestContext>().Object);
+            new Mock<BotContext>().Object, new Mock<IFeaturesCollection>().Object);
         var builder = new UpdatePipelineBuilder(provider);
         builder.UseMiddleware(typeof(TestMiddleware)).UseMiddleware<TestMiddleware>();
         for (var i = 0; i < n; i++)
@@ -104,7 +104,7 @@ public class UpdatePipelineBuilderTests
         services.AddTransient<TestHandler>();
         var provider = services.BuildServiceProvider();
         var context = new TestingUpdateContext(provider, new Mock<Update>().Object,
-            new Mock<BotContext>().Object, new Mock<ICrossRequestContext>().Object);
+            new Mock<BotContext>().Object, new Mock<IFeaturesCollection>().Object);
         var builder = new UpdatePipelineBuilder(provider);
         for (var i = 0; i < n; i++)
             builder.UseHandler<TestHandler>();

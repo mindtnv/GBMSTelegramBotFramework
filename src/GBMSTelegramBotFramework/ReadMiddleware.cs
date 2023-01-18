@@ -7,14 +7,14 @@ public class ReadMiddleware : IUpdateMiddleware
 {
     public async Task HandleUpdateAsync(UpdateContext context, UpdateDelegate next)
     {
-        var state = context.CrossRequestContext.Get<ReadMiddlewareState>();
+        var state = context.Features.Get<ReadMiddlewareState>();
         if (state == null || context.Update.Type != UpdateType.Message)
         {
             await next(context);
             return;
         }
 
-        context.CrossRequestContext.Remove<ReadMiddlewareState>();
+        context.Features.Remove<ReadMiddlewareState>();
         state.TaskCompletionSource.SetResult(context.Update.Message!.Text!);
         await state.TaskCompletionSource.Task.ConfigureAwait(false);
     }

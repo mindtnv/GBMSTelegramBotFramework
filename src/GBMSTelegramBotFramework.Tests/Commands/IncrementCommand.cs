@@ -9,11 +9,11 @@ public class IncrementCommand : CommandHandlerBase
 
     public override Task ExecuteAsync(UpdateContext context, string[] args)
     {
-        var counter = context.CrossRequestContext.Get<TestingCounter>();
+        var counter = context.Features.Get<TestingCounter>();
         if (counter == null)
         {
             counter = new TestingCounter();
-            context.CrossRequestContext.Set(counter);
+            context.Features.Set(counter);
         }
 
         counter.Increment();

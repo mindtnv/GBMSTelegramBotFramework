@@ -22,6 +22,7 @@ public class BotRegistrationConfigurator : IBotRegistrationConfigurator
         _pipelineConfigurator = new UpdatePipelineConfigurator(services);
         On = _pipelineConfigurator.On;
         _optionsConfigurator = new BotOptionsConfigurator(_botOptions);
+        _featuresCollection.Set<IUpdateContextFeaturesCollectionStore>(new UpdateContextFeaturesCollectionStore());
     }
 
     public IUpdatePipelineOnConfigurator On { get; }
