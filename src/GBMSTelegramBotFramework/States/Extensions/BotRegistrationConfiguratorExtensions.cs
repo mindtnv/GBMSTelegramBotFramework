@@ -4,7 +4,7 @@ namespace GBMSTelegramBotFramework.States.Extensions;
 
 public static class BotRegistrationConfiguratorExtensions
 {
-    public static IBotRegistrationConfigurator WithState(this IBotRegistrationConfigurator configurator,
+    public static IBotStateConfigurator WithState(this IBotRegistrationConfigurator configurator,
         Action<IBotStateConfigurator> configure)
     {
         var botStateConfigurator = new BotStateConfigurator(configurator.Services);
@@ -18,14 +18,13 @@ public static class BotRegistrationConfiguratorExtensions
                 store.AddStateDefinition(stateDefinition);
             });
         });
-        return configurator;
+        return botStateConfigurator;
     }
 
-    public static IBotRegistrationConfigurator WithState<T>(this IBotRegistrationConfigurator configurator)
+    public static IBotStateConfigurator WithState<T>(this IBotRegistrationConfigurator configurator)
         where T : class, IBotState
     {
-        configurator.WithState(cfg => cfg.WithState<T>());
-        return configurator;
+        return configurator.WithState(cfg => cfg.WithState<T>());
     }
 
     private static IBotStateStore EnsureStateStoreInFeatures(IFeaturesCollection collection)
