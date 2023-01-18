@@ -24,7 +24,7 @@ public class BotRegistrationConfigurator : IBotRegistrationConfigurator
         _optionsConfigurator = new BotOptionsConfigurator(_botOptions);
     }
 
-    public IBotOnConfigurator On { get; }
+    public IUpdatePipelineOnConfigurator On { get; }
     public IServiceCollection Services { get; }
 
     public IBotRegistrationConfigurator UseTelegramBotClient(ITelegramBotClient telegramBotClient)

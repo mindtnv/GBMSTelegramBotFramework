@@ -1,6 +1,6 @@
 ﻿namespace GBMSTelegramBotFramework.Abstractions;
 
-public interface IBotOnConfigurator
+public interface IUpdatePipelineOnConfigurator
 {
     IUpdatePipelineConfigurator Configurator { get; }
 }

@@ -28,7 +28,7 @@ public class BotStateConfigurator : IBotStateConfigurator
     }
 
     public IServiceCollection Services { get; }
-    public IBotOnConfigurator On { get; }
+    public IUpdatePipelineOnConfigurator On { get; }
 
     IUpdatePipelineConfigurator IUpdatePipelineConfigurator.Configure(Action<IUpdatePipelineBuilder> configure) =>
         _updatePipelineConfigurator.Configure(configure);

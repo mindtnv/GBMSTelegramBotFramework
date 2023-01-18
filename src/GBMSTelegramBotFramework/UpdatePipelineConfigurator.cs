@@ -10,11 +10,11 @@ public class UpdatePipelineConfigurator : IUpdatePipelineConfigurator
     public UpdatePipelineConfigurator(IServiceCollection services)
     {
         Services = services;
-        On = new DefaultBotOnConfigurator(this);
+        On = new DefaultUpdatePipelineOnConfigurator(this);
     }
 
     public IServiceCollection Services { get; }
-    public IBotOnConfigurator On { get; }
+    public IUpdatePipelineOnConfigurator On { get; }
 
     public IUpdatePipelineConfigurator Configure(Action<IUpdatePipelineBuilder> configure)
     {
@@ -28,9 +28,9 @@ public class UpdatePipelineConfigurator : IUpdatePipelineConfigurator
             configuration(builder);
     }
 
-    private class DefaultBotOnConfigurator : IBotOnConfigurator
+    private class DefaultUpdatePipelineOnConfigurator : IUpdatePipelineOnConfigurator
     {
-        public DefaultBotOnConfigurator(IUpdatePipelineConfigurator configurator)
+        public DefaultUpdatePipelineOnConfigurator(IUpdatePipelineConfigurator configurator)
         {
             Configurator = configurator;
         }
