@@ -2,5 +2,5 @@
 
 public interface IBotOnConfigurator
 {
-    IBotRegistrationConfigurator Configurator { get; }
+    IUpdatePipelineConfigurator Configurator { get; }
 }

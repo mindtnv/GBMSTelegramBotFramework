@@ -9,6 +9,9 @@ public class BotRegistrationConfigurator : IBotRegistrationConfigurator
 {
     private readonly BotOptions _botOptions = new();
     private readonly List<Action<IBotRegistrationConfigurator>> _configurators = new();
+    private readonly List<Action<IBotRegistrationConfigurator, IServiceProvider>> _configuratorsWithServiceProvider =
+        new();
+    private readonly IFeaturesCollection _featuresCollection = new FeaturesCollection();
     private readonly BotOptionsConfigurator _optionsConfigurator;
     private readonly UpdatePipelineConfigurator _pipelineConfigurator;
     private ITelegramBotClient? _client;
@@ -16,8 +19,8 @@ public class BotRegistrationConfigurator : IBotRegistrationConfigurator
     public BotRegistrationConfigurator(IServiceCollection services)
     {
         Services = services;
-        On = new DefaultBotOnConfigurator(this);
         _pipelineConfigurator = new UpdatePipelineConfigurator(services);
+        On = _pipelineConfigurator.On;
         _optionsConfigurator = new BotOptionsConfigurator(_botOptions);
     }
 
@@ -48,18 +51,30 @@ public class BotRegistrationConfigurator : IBotRegistrationConfigurator
         return this;
     }
 
+    public IBotRegistrationConfigurator Configure(Action<IBotRegistrationConfigurator, IServiceProvider> configure)
+    {
+        _configuratorsWithServiceProvider.Add(configure);
+        return this;
+    }
+
+    public IBotRegistrationConfigurator ConfigureFeatures(Action<IFeaturesCollection> configure)
+    {
+        configure(_featuresCollection);
+        return this;
+    }
+
     public void Register()
     {
-        foreach (var c in _configurators)
-            c(this);
-
+        _configurators.ForEach(c => c(this));
         Services.AddSingleton<IBot>(provider =>
         {
+            _configuratorsWithServiceProvider.ForEach(c => c(this, provider));
             var bot = new Bot(provider)
             {
                 Client = _client ?? CreateClientFromOptions(_botOptions) ??
                     throw new InvalidOperationException("TelegramClient is not configured"),
                 Options = _botOptions,
+                Features = _featuresCollection,
             };
 
             // Configure UpdatePipeline
@@ -83,14 +98,4 @@ public class BotRegistrationConfigurator : IBotRegistrationConfigurator
 
     private ITelegramBotClient? CreateClientFromOptions(BotOptions options) =>
         options.Token is null ? null : new TelegramBotClient(options.Token);
-
-    private class DefaultBotOnConfigurator : IBotOnConfigurator
-    {
-        public DefaultBotOnConfigurator(IBotRegistrationConfigurator configurator)
-        {
-            Configurator = configurator;
-        }
-
-        public IBotRegistrationConfigurator Configurator { get; }
-    }
 }

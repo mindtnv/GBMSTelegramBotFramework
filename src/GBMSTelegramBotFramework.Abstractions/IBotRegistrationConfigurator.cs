@@ -6,10 +6,11 @@ namespace GBMSTelegramBotFramework.Abstractions;
 public interface IBotRegistrationConfigurator : IUpdatePipelineConfigurator
 {
     IServiceCollection Services { get; }
-    IBotOnConfigurator On { get; }
     IBotRegistrationConfigurator UseTelegramBotClient(ITelegramBotClient telegramBotClient);
     IBotRegistrationConfigurator ConfigureUpdatePipeline(Action<IUpdatePipelineConfigurator> configure);
     IBotRegistrationConfigurator ConfigureOptions(Action<IBotOptionsConfigurator> configure);
     IBotRegistrationConfigurator Configure(Action<IBotRegistrationConfigurator> configure);
+    IBotRegistrationConfigurator Configure(Action<IBotRegistrationConfigurator, IServiceProvider> configure);
+    IBotRegistrationConfigurator ConfigureFeatures(Action<IFeaturesCollection> configure);
     void Register();
 }

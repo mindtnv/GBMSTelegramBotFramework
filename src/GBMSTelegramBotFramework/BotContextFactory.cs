@@ -9,5 +9,6 @@ public class BotContextFactory : IBotContextFactory
         {
             Options = bot.Options,
             Client = bot.Client,
+            Features = bot.Features,
         };
 }

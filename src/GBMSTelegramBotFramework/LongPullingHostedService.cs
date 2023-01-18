@@ -1,8 +1,10 @@
-﻿using GBMSTelegramBotFramework.Abstractions;
+﻿using System.Diagnostics;
+using GBMSTelegramBotFramework.Abstractions;
 using GBMSTelegramBotFramework.Abstractions.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot;
+using Telegram.Bot.Types;
 
 namespace GBMSTelegramBotFramework;
 
@@ -22,8 +24,15 @@ public class LongPullingHostedService : IHostedService
         foreach (var bot in _bots)
         {
             _logger.LogInformation("Starting long pulling for bot {BotName}", bot.Options.Name);
-            bot.Client.StartReceiving(async (_, update, _) => { await bot.HandleUpdateAsync(update); },
-                (_, _, _) => Task.CompletedTask, cancellationToken: cancellationToken);
+
+            async void UpdateHandler(ITelegramBotClient telegramBotClient, Update update,
+                CancellationToken cancellationToken1)
+            {
+                await bot.HandleUpdateAsync(update);
+            }
+
+            bot.Client.StartReceiving(UpdateHandler,
+                (_, e, _) => { Debug.Fail(e.Message); }, cancellationToken: cancellationToken);
         }
 
         return Task.CompletedTask;
