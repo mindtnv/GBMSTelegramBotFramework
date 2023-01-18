@@ -1,5 +1,4 @@
 ﻿using GBMSTelegramBotFramework.Abstractions;
-using GBMSTelegramBotFramework.Abstractions.Extensions;
 using GBMSTelegramBotFramework.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,7 +12,6 @@ public class BotStateConfigurator : IBotStateConfigurator
     private string? _name;
     private Func<UpdateContext, Task>? _onEnter;
     private Func<UpdateContext, Task>? _onLeave;
-
 
     public BotStateConfigurator(IServiceCollection services)
     {
@@ -88,7 +86,8 @@ public class BotStateConfigurator : IBotStateConfigurator
 
     public BotStateDefinition BuildBotStateDefinition(IServiceProvider serviceProvider)
     {
-        var name = _name ?? throw new InvalidOperationException("State name is not set");;
+        var name = _name ?? throw new InvalidOperationException("State name is not set");
+        ;
         var isInitial = _isInitialState ?? false;
         var onEnter = _onEnter ?? EmptyCallback;
         var onLeave = _onLeave ?? EmptyCallback;
