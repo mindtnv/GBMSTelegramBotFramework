@@ -11,6 +11,5 @@ public interface IBotRegistrationConfigurator : IUpdatePipelineConfigurator
     IBotRegistrationConfigurator ConfigureOptions(Action<IBotOptionsConfigurator> configure);
     IBotRegistrationConfigurator Configure(Action<IBotRegistrationConfigurator> configure);
     IBotRegistrationConfigurator Configure(Action<IBotRegistrationConfigurator, IServiceProvider> configure);
-    IBotRegistrationConfigurator ConfigureFeatures(Action<IFeaturesCollection> configure);
     void Register();
 }

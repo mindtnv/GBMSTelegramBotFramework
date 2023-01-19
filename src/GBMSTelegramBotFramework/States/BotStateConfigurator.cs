@@ -13,14 +13,16 @@ public class BotStateConfigurator : IBotStateConfigurator
     private Func<UpdateContext, Task>? _onEnter;
     private Func<UpdateContext, Task>? _onLeave;
 
-    public BotStateConfigurator(IServiceCollection services)
+    public BotStateConfigurator(IServiceCollection services, IFeaturesCollection botFeatures)
     {
         Services = services;
-        _updatePipelineConfigurator = new UpdatePipelineConfigurator(Services);
+        BotFeatures = botFeatures;
+        _updatePipelineConfigurator = new UpdatePipelineConfigurator(Services, botFeatures);
         _updatePipelineConfigurator.UseMiddleware<StopMiddleware>();
         On = _updatePipelineConfigurator.On;
     }
 
+    public IFeaturesCollection BotFeatures { get; }
     public IServiceCollection Services { get; }
     public IUpdatePipelineOnConfigurator On { get; }
 

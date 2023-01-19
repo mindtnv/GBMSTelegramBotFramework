@@ -4,6 +4,7 @@ namespace GBMSTelegramBotFramework.Abstractions;
 
 public interface IUpdatePipelineConfigurator
 {
+    IFeaturesCollection BotFeatures { get; }
     IServiceCollection Services { get; }
     IUpdatePipelineOnConfigurator On { get; }
     IUpdatePipelineConfigurator Configure(Action<IUpdatePipelineBuilder> configure);

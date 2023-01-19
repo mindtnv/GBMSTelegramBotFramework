@@ -7,16 +7,13 @@ public static class BotRegistrationConfiguratorExtensions
     public static IBotStateConfigurator WithState(this IBotRegistrationConfigurator configurator,
         Action<IBotStateConfigurator> configure)
     {
-        var botStateConfigurator = new BotStateConfigurator(configurator.Services);
+        var botStateConfigurator = new BotStateConfigurator(configurator.Services, configurator.BotFeatures);
         configure(botStateConfigurator);
         configurator.Configure((cfg, provider) =>
         {
             var stateDefinition = botStateConfigurator.BuildBotStateDefinition(provider);
-            cfg.ConfigureFeatures(features =>
-            {
-                var store = EnsureStateStoreInFeatures(features);
-                store.AddStateDefinition(stateDefinition);
-            });
+            var store = EnsureStateStoreInFeatures(configurator.BotFeatures);
+            store.AddStateDefinition(stateDefinition);
         });
         return botStateConfigurator;
     }

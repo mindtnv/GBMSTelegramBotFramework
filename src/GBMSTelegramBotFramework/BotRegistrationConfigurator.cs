@@ -19,13 +19,14 @@ public class BotRegistrationConfigurator : IBotRegistrationConfigurator
     public BotRegistrationConfigurator(IServiceCollection services)
     {
         Services = services;
-        _pipelineConfigurator = new UpdatePipelineConfigurator(services);
+        _pipelineConfigurator = new UpdatePipelineConfigurator(services, _featuresCollection);
         On = _pipelineConfigurator.On;
         _optionsConfigurator = new BotOptionsConfigurator(_botOptions);
         _featuresCollection.Set<IUpdateContextFeaturesCollectionStore>(new UpdateContextFeaturesCollectionStore());
     }
 
     public IUpdatePipelineOnConfigurator On { get; }
+    public IFeaturesCollection BotFeatures => _featuresCollection;
     public IServiceCollection Services { get; }
 
     public IBotRegistrationConfigurator UseTelegramBotClient(ITelegramBotClient telegramBotClient)
@@ -55,12 +56,6 @@ public class BotRegistrationConfigurator : IBotRegistrationConfigurator
     public IBotRegistrationConfigurator Configure(Action<IBotRegistrationConfigurator, IServiceProvider> configure)
     {
         _configuratorsWithServiceProvider.Add(configure);
-        return this;
-    }
-
-    public IBotRegistrationConfigurator ConfigureFeatures(Action<IFeaturesCollection> configure)
-    {
-        configure(_featuresCollection);
         return this;
     }
 
