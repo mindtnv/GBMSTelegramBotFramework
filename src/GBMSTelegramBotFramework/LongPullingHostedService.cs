@@ -4,6 +4,7 @@ using GBMSTelegramBotFramework.Abstractions.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot;
+using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 
 namespace GBMSTelegramBotFramework;
@@ -32,7 +33,10 @@ public class LongPullingHostedService : IHostedService
             }
 
             bot.Client.StartReceiving(UpdateHandler,
-                (_, e, _) => { Debug.Fail(e.Message); }, cancellationToken: cancellationToken);
+                (_, e, _) => { Debug.Fail(e.Message); }, new ReceiverOptions
+                {
+                    AllowedUpdates = bot.Options.UpdateTypes?.ToArray(),
+                }, cancellationToken);
         }
 
         return Task.CompletedTask;

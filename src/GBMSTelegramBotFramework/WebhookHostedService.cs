@@ -25,7 +25,8 @@ public class WebhookHostedService : IHostedService
         {
             var url = _urlResolver.GetUrl(bot);
             _logger.LogInformation("Register webhook for bot {BotName} with url {Url}", bot.Options.Name, url);
-            await bot.Client.SetWebhookAsync(url, cancellationToken: cancellationToken);
+            await bot.Client.SetWebhookAsync(url, cancellationToken: cancellationToken,
+                allowedUpdates: bot.Options.UpdateTypes);
         }
     }
 

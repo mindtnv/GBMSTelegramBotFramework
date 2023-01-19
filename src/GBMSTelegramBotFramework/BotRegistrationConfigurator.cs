@@ -11,7 +11,6 @@ public class BotRegistrationConfigurator : IBotRegistrationConfigurator
     private readonly List<Action<IBotRegistrationConfigurator>> _configurators = new();
     private readonly List<Action<IBotRegistrationConfigurator, IServiceProvider>> _configuratorsWithServiceProvider =
         new();
-    private readonly IFeaturesCollection _featuresCollection = new FeaturesCollection();
     private readonly BotOptionsConfigurator _optionsConfigurator;
     private readonly UpdatePipelineConfigurator _pipelineConfigurator;
     private ITelegramBotClient? _client;
@@ -19,14 +18,14 @@ public class BotRegistrationConfigurator : IBotRegistrationConfigurator
     public BotRegistrationConfigurator(IServiceCollection services)
     {
         Services = services;
-        _pipelineConfigurator = new UpdatePipelineConfigurator(services, _featuresCollection);
+        _pipelineConfigurator = new UpdatePipelineConfigurator(services, BotFeatures);
         On = _pipelineConfigurator.On;
         _optionsConfigurator = new BotOptionsConfigurator(_botOptions);
-        _featuresCollection.Set<IUpdateContextFeaturesCollectionStore>(new UpdateContextFeaturesCollectionStore());
+        BotFeatures.Set<IUpdateContextFeaturesCollectionStore>(new UpdateContextFeaturesCollectionStore());
     }
 
     public IUpdatePipelineOnConfigurator On { get; }
-    public IFeaturesCollection BotFeatures => _featuresCollection;
+    public IFeaturesCollection BotFeatures { get; } = new FeaturesCollection();
     public IServiceCollection Services { get; }
 
     public IBotRegistrationConfigurator UseTelegramBotClient(ITelegramBotClient telegramBotClient)
@@ -70,7 +69,7 @@ public class BotRegistrationConfigurator : IBotRegistrationConfigurator
                 Client = _client ?? CreateClientFromOptions(_botOptions) ??
                     throw new InvalidOperationException("TelegramClient is not configured"),
                 Options = _botOptions,
-                Features = _featuresCollection,
+                Features = BotFeatures,
             };
 
             // Configure UpdatePipeline
