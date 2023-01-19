@@ -1,4 +1,5 @@
 ﻿using GBMSTelegramBotFramework.Abstractions.Extensions;
+using GBMSTelegramBotFramework.Commands.Extensions;
 using GBMSTelegramBotFramework.Extensions;
 using GBMSTelegramBotFramework.Testing.Builders;
 using GBMSTelegramBotFramework.Testing.Extensions;
@@ -15,7 +16,8 @@ public class ReadMessageTests
         var bot = Utils.CreateTestBot(bot =>
         {
             bot.UseReadMiddleware();
-            bot.UseCommand<SumReadCommandHandler>();
+            bot.WithCommand<SumReadCommand>();
+            bot.UseCommands();
         });
         var update = UpdateBuilder.WithTextMessage("/sum").Build();
         var updateA = UpdateBuilder.WithTextMessage(a.ToString()).Build();

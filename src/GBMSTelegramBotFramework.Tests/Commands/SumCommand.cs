@@ -1,11 +1,15 @@
 ﻿using GBMSTelegramBotFramework.Abstractions;
+using GBMSTelegramBotFramework.Commands;
 using Telegram.Bot;
 
 namespace GBMSTelegramBotFramework.Tests.Commands;
 
-public class SumCommandHandler : CommandHandlerBase
+public class SumCommand : CommandBase<SumCommand>
 {
-    public override string Name => "sum";
+    public override void ConfigureDescriptor(ICommandOptionsBuilder builder)
+    {
+        builder.WithAliases(new[] {"/sum"});
+    }
 
     public override Task ExecuteAsync(UpdateContext context, string[] args)
     {

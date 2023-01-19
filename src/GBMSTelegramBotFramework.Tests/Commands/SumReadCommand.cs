@@ -1,12 +1,16 @@
 ﻿using GBMSTelegramBotFramework.Abstractions;
+using GBMSTelegramBotFramework.Commands;
 using GBMSTelegramBotFramework.Extensions;
 using Telegram.Bot;
 
 namespace GBMSTelegramBotFramework.Tests.Commands;
 
-public class SumReadCommandHandler : CommandHandlerBase
+public class SumReadCommand : CommandBase<SumReadCommand>
 {
-    public override string Name => "sum";
+    public override void ConfigureDescriptor(ICommandOptionsBuilder builder)
+    {
+        builder.WithAliases(new[] {"/sum"});
+    }
 
     public override async Task ExecuteAsync(UpdateContext context, string[] args)
     {

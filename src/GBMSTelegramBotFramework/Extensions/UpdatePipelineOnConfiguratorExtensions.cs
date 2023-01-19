@@ -47,6 +47,16 @@ public static class UpdatePipelineOnConfiguratorExtensions
     public static IUpdatePipelineConfigurator CallbackQuery(this IUpdatePipelineOnConfigurator configurator,
         Func<UpdateContext, Task> handler) => UseEvent(configurator, h => h.OnCallbackQuery += handler);
 
+    public static IUpdatePipelineConfigurator CallbackQuery(this IUpdatePipelineOnConfigurator configurator,
+        string data, Func<UpdateContext, Task> handler)
+    {
+        return UseEvent(configurator, h => h.OnText += async context =>
+        {
+            if (context.Update.CallbackQuery!.Data == data)
+                await handler(context);
+        });
+    }
+
     public static IUpdatePipelineConfigurator InlineQuery(this IUpdatePipelineOnConfigurator configurator,
         Func<UpdateContext, Task> handler) => UseEvent(configurator, h => h.OnInlineQuery += handler);
 

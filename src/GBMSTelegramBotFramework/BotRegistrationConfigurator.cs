@@ -25,6 +25,7 @@ public class BotRegistrationConfigurator : IBotRegistrationConfigurator
     }
 
     public IUpdatePipelineOnConfigurator On { get; }
+    public IFeaturesCollection Features => _pipelineConfigurator.Features;
     public IFeaturesCollection BotFeatures { get; } = new FeaturesCollection();
     public IServiceCollection Services { get; }
 

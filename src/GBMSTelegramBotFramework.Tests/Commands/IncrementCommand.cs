@@ -1,11 +1,15 @@
 ﻿using GBMSTelegramBotFramework.Abstractions;
+using GBMSTelegramBotFramework.Commands;
 using Telegram.Bot;
 
 namespace GBMSTelegramBotFramework.Tests.Commands;
 
-public class IncrementCommand : CommandHandlerBase
+public class IncrementCommand : CommandBase<IncrementCommand>
 {
-    public override string Name => "increment";
+    public override void ConfigureDescriptor(ICommandOptionsBuilder builder)
+    {
+        builder.WithAliases(new[] {"/increment"});
+    }
 
     public override Task ExecuteAsync(UpdateContext context, string[] args)
     {

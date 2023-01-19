@@ -14,6 +14,14 @@ public static class UpdatePipelineConfiguratorExtensions
         return configurator;
     }
 
+    public static IUpdatePipelineConfigurator UseMiddleware<TMiddleware>(this IUpdatePipelineConfigurator configurator,
+        TMiddleware instance)
+        where TMiddleware : IUpdateMiddleware
+    {
+        configurator.Configure(x => x.UseMiddleware(instance));
+        return configurator;
+    }
+
     public static IUpdatePipelineConfigurator UseHandler<THandler>(this IUpdatePipelineConfigurator configurator)
         where THandler : IUpdateHandler
     {
@@ -27,21 +35,6 @@ public static class UpdatePipelineConfiguratorExtensions
         where THandler : IUpdateHandler
     {
         configurator.Configure(x => x.UseHandler(instance));
-        return configurator;
-    }
-
-    public static IUpdatePipelineConfigurator UseCommand<TCommand>(this IUpdatePipelineConfigurator configurator)
-        where TCommand : CommandHandlerBase
-    {
-        configurator.UseHandler<TCommand>();
-        return configurator;
-    }
-
-    public static IUpdatePipelineConfigurator UseCommandNotFoundHandler(this IUpdatePipelineConfigurator configurator,
-        string message)
-    {
-        configurator.Services.Configure<CommandNotFoundHandlerOptions>(x => x.Message = message);
-        configurator.UseHandler<CommandNotFoundHandler>();
         return configurator;
     }
 

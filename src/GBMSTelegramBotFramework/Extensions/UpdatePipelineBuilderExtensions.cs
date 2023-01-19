@@ -14,4 +14,11 @@ public static class UpdatePipelineBuilderExtensions
         await instance.HandleUpdateAsync(ctx);
         await next(ctx);
     });
+
+    public static IUpdatePipelineBuilder UseMiddleware<TMiddleware>(this IUpdatePipelineBuilder builder,
+        TMiddleware instance)
+        where TMiddleware : IUpdateMiddleware => builder.Use(async (ctx, next) =>
+    {
+        await instance.HandleUpdateAsync(ctx, next);
+    });
 }

@@ -1,12 +1,17 @@
 ﻿using GBMSTelegramBotFramework.Abstractions;
+using GBMSTelegramBotFramework.Commands;
 using Telegram.Bot;
 
 namespace GBMSTelegramBotFramework.Tests.Commands;
 
-public class StartCommandHandler : CommandHandlerBase
+public class StartCommand : CommandBase<StartCommand>
 {
     public static readonly string Message = "Hello World!";
-    public override string Name => "start";
+
+    public override void ConfigureDescriptor(ICommandOptionsBuilder builder)
+    {
+        builder.WithAliases(new[] {"/start"});
+    }
 
     public override Task ExecuteAsync(UpdateContext context, string[] args)
     {

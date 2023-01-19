@@ -22,6 +22,7 @@ public class BotStateConfigurator : IBotStateConfigurator
         On = _updatePipelineConfigurator.On;
     }
 
+    public IFeaturesCollection Features => _updatePipelineConfigurator.Features;
     public IFeaturesCollection BotFeatures { get; }
     public IServiceCollection Services { get; }
     public IUpdatePipelineOnConfigurator On { get; }

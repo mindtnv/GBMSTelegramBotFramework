@@ -12,8 +12,10 @@ public class UpdatePipelineConfigurator : IUpdatePipelineConfigurator
         Services = services;
         BotFeatures = botFeatures;
         On = new DefaultUpdatePipelineOnConfigurator(this);
+        Features = new FeaturesCollection();
     }
 
+    public IFeaturesCollection Features { get; }
     public IFeaturesCollection BotFeatures { get; }
     public IServiceCollection Services { get; }
     public IUpdatePipelineOnConfigurator On { get; }

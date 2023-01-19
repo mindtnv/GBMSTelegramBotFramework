@@ -7,9 +7,16 @@ public class StateMiddleware : IUpdateMiddleware
     public async Task HandleUpdateAsync(UpdateContext context, UpdateDelegate next)
     {
         var state = context.Features.Get<StateMiddlewareState>();
+        var stateStore = context.BotContext.Features.Get<IBotStateStore>();
+        if (stateStore == null)
+        {
+            await next(context);
+            return;
+        }
+
         if (state == null)
         {
-            var initialBotState = context.BotContext.Features.Get<IBotStateStore>()!.GetInitialStateDefinition();
+            var initialBotState = stateStore.GetInitialStateDefinition();
             if (initialBotState == null)
             {
                 await next(context);
