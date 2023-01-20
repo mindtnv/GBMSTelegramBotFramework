@@ -18,16 +18,16 @@ public class TestStates
             bot.WithState(state =>
             {
                 state.WithName("test2")
-                     .OnEnter(ctx => ctx.SendTextMessageAsync("enter2"))
-                     .OnLeave(ctx => ctx.SendTextMessageAsync("leave2"))
+                     .OnEnter(ctx => ctx.Reply.WithText("enter2"))
+                     .OnLeave(ctx => ctx.Reply.WithText("leave2"))
                      .On.Text(ctx => ctx.EnterStateAsync("test1"));
             });
             bot.WithState(state =>
             {
                 state.WithName("test1")
                      .Initial()
-                     .OnEnter(ctx => ctx.SendTextMessageAsync("enter1"))
-                     .OnLeave(ctx => ctx.SendTextMessageAsync("leave1"))
+                     .OnEnter(ctx => ctx.Reply.WithText("enter1"))
+                     .OnLeave(ctx => ctx.Reply.WithText("leave1"))
                      .On.Text(ctx => ctx.EnterStateAsync("test2"));
             });
 
@@ -54,15 +54,15 @@ public class TestStates
             bot.WithState(state =>
             {
                 state.WithName("test2")
-                     .OnEnter(ctx => ctx.SendTextMessageAsync("enter2"))
-                     .OnLeave(ctx => ctx.SendTextMessageAsync("leave2"))
+                     .OnEnter(ctx => ctx.Reply.WithText("enter2"))
+                     .OnLeave(ctx => ctx.Reply.WithText("leave2"))
                      .On.Text(ctx => ctx.EnterStateAsync("test1"));
             });
             bot.WithState(state =>
             {
                 state.WithName("test1")
-                     .OnEnter(ctx => ctx.SendTextMessageAsync("enter1"))
-                     .OnLeave(ctx => ctx.SendTextMessageAsync("leave1"))
+                     .OnEnter(ctx => ctx.Reply.WithText("enter1"))
+                     .OnLeave(ctx => ctx.Reply.WithText("leave1"))
                      .On.Text(ctx => ctx.EnterStateAsync("test2"));
             });
             bot.On.Text(async ctx =>

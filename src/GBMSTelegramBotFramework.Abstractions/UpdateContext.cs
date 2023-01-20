@@ -10,6 +10,7 @@ public abstract class UpdateContext : IDisposable
     public IDictionary<object, object> Items => _items.Value;
     public IFeaturesCollection Features { get; set; }
     public IServiceProvider Services { get; set; }
+    public abstract IUpdateContextReply Reply { get; }
 
     protected UpdateContext(IServiceProvider services, Update update, BotContext botContext,
         IFeaturesCollection features)
