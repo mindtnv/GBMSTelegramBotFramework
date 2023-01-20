@@ -11,7 +11,7 @@ public class CommandOptionsBuilder : ICommandOptionsBuilder
     }
 
     public CommandOptions Build() =>
-        new CommandOptions
+        new()
         {
             Aliases = _aliases,
         };

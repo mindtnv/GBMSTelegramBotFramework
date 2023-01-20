@@ -2,7 +2,7 @@
 using GBMSTelegramBotFramework.Commands;
 using Telegram.Bot;
 
-namespace GBMSTelegramBotFramework.Tests.Commands;
+namespace GBMSTelegramBotFramework.Tests.Commands.Examples;
 
 public class StartCommand : CommandBase<StartCommand>
 {
@@ -10,7 +10,7 @@ public class StartCommand : CommandBase<StartCommand>
 
     public override void ConfigureDescriptor(ICommandOptionsBuilder builder)
     {
-        builder.WithAliases(new[] {"/start"});
+        builder.WithAliases(new[] {"/start", "start"});
     }
 
     public override Task ExecuteAsync(UpdateContext context, string[] args)

@@ -4,11 +4,11 @@ using GBMSTelegramBotFramework.Commands;
 using GBMSTelegramBotFramework.Commands.Extensions;
 using GBMSTelegramBotFramework.Testing.Builders;
 using GBMSTelegramBotFramework.Testing.Extensions;
-using GBMSTelegramBotFramework.Tests.Commands;
+using GBMSTelegramBotFramework.Tests.Commands.Examples;
 
 namespace GBMSTelegramBotFramework.Tests;
 
-[TestFixture]
+[TestFixture(Category = "Commands")]
 public class CommandHandlerBaseTests
 {
     [SetUp]

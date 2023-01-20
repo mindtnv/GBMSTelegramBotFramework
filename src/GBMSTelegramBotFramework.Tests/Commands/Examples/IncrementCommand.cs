@@ -2,7 +2,7 @@
 using GBMSTelegramBotFramework.Commands;
 using Telegram.Bot;
 
-namespace GBMSTelegramBotFramework.Tests.Commands;
+namespace GBMSTelegramBotFramework.Tests.Commands.Examples;
 
 public class IncrementCommand : CommandBase<IncrementCommand>
 {

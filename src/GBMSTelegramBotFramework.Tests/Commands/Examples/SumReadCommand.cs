@@ -3,7 +3,7 @@ using GBMSTelegramBotFramework.Commands;
 using GBMSTelegramBotFramework.Extensions;
 using Telegram.Bot;
 
-namespace GBMSTelegramBotFramework.Tests.Commands;
+namespace GBMSTelegramBotFramework.Tests.Commands.Examples;
 
 public class SumReadCommand : CommandBase<SumReadCommand>
 {
