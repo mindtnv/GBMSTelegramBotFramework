@@ -41,9 +41,7 @@ public static class UpdateContextSendExtensions
         CancellationToken cancellationToken = default)
     {
         await using var scope = context.Services.CreateAsyncScope();
-        var resolver = scope.ServiceProvider.GetRequiredService<IChatIdResolverStore>()
-                            .GetResolver(context.BotContext.Options.Name!);
-        var chatId = await resolver.GetChatIdAsync(userId);
+        var chatId = context.Update.GetChatId() ?? throw new InvalidOperationException("Cannot get ChatId from Update");
         await context.BotContext.Client.SendTextMessageAsync(chatId, text, parseMode, entities, disableWebPagePreview,
             disableNotification, protectContent, replyToMessageId, allowSendingWithoutReply, replyMarkup,
             cancellationToken);

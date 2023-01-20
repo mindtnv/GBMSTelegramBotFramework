@@ -1,4 +1,4 @@
-﻿namespace GBMSTelegramBotFramework.Abstractions;
+﻿namespace GBMSTelegramBotFramework;
 
 public class WebhookOptions
 {

@@ -10,8 +10,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GBMSTelegramBotFramework.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GBMSTelegramBotFramework.AspNetCore", "src\GBMSTelegramBotFramework.AspNetCore\GBMSTelegramBotFramework.AspNetCore.csproj", "{78FB3CDC-E04E-4227-9154-F913D45E9077}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GBMSTelegramBotFramework.EntityFramework", "src\GBMSTelegramBotFramework.EntityFramework\GBMSTelegramBotFramework.EntityFramework.csproj", "{402A0756-FC4A-48B2-906F-2578E6489ED4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,9 +36,5 @@ Global
 		{78FB3CDC-E04E-4227-9154-F913D45E9077}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78FB3CDC-E04E-4227-9154-F913D45E9077}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78FB3CDC-E04E-4227-9154-F913D45E9077}.Release|Any CPU.Build.0 = Release|Any CPU
-		{402A0756-FC4A-48B2-906F-2578E6489ED4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{402A0756-FC4A-48B2-906F-2578E6489ED4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{402A0756-FC4A-48B2-906F-2578E6489ED4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{402A0756-FC4A-48B2-906F-2578E6489ED4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
