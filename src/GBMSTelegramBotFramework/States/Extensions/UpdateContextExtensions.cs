@@ -10,7 +10,7 @@ public static class UpdateContextExtensions
         var stateStore = updateContext.BotContext.Features.Get<IBotStateStore>() ??
                          throw new InvalidOperationException(
                              "You must register at least one state to use this feature");
-        var nextDefinition = stateStore.GetStateDefinition(stateName) ?? throw new BotStateNotFoundException(stateName);
+        var nextDefinition = stateStore.GetState(stateName) ?? throw new BotStateNotFoundException(stateName);
         if (botState != null)
         {
             var currentDefinition = botState.CurrentState;
@@ -26,7 +26,7 @@ public static class UpdateContextExtensions
         await nextDefinition.OnEnter(updateContext);
     }
 
-    public static BotStateDefinition? GetCurrentState(this UpdateContext updateContext)
+    public static BotState? GetCurrentState(this UpdateContext updateContext)
     {
         var botState = updateContext.Features.Get<StateMiddleware.StateMiddlewareState>();
         return botState?.CurrentState ?? null;

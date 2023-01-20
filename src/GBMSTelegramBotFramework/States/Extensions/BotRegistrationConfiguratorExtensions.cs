@@ -13,13 +13,13 @@ public static class BotRegistrationConfiguratorExtensions
         {
             var stateDefinition = botStateConfigurator.BuildBotStateDefinition(provider);
             var store = EnsureStateStoreInFeatures(configurator.BotFeatures);
-            store.AddStateDefinition(stateDefinition);
+            store.AddState(stateDefinition);
         });
         return botStateConfigurator;
     }
 
     public static IBotStateConfigurator WithState<T>(this IBotRegistrationConfigurator configurator)
-        where T : class, IBotState
+        where T : class, IBotStateDescriptor
     {
         return configurator.WithState(cfg => cfg.WithState<T>());
     }

@@ -2,7 +2,7 @@
 
 namespace GBMSTelegramBotFramework.States;
 
-public interface IBotState
+public interface IBotStateDescriptor
 {
     string Name { get; }
     bool IsInitial { get; }

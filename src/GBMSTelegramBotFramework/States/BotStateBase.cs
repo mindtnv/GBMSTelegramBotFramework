@@ -2,7 +2,7 @@
 
 namespace GBMSTelegramBotFramework.States;
 
-public abstract class BotStateBase : IBotState
+public abstract class BotStateBase : IBotStateDescriptor
 {
     public abstract string Name { get; }
     public virtual bool IsInitial => false;

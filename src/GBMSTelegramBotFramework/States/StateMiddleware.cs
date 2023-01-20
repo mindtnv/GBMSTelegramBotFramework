@@ -16,7 +16,7 @@ public class StateMiddleware : IUpdateMiddleware
 
         if (state == null)
         {
-            var initialBotState = stateStore.GetInitialStateDefinition();
+            var initialBotState = stateStore.GetInitialState();
             if (initialBotState == null)
             {
                 await next(context);
@@ -36,6 +36,6 @@ public class StateMiddleware : IUpdateMiddleware
 
     public class StateMiddlewareState
     {
-        public BotStateDefinition CurrentState { get; set; }
+        public BotState CurrentState { get; set; }
     }
 }

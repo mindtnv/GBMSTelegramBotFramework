@@ -2,7 +2,7 @@
 
 namespace GBMSTelegramBotFramework.States;
 
-public class BotStateDefinition
+public class BotState
 {
     public string Name { get; set; }
     public UpdateDelegate UpdateDelegate { get; set; }

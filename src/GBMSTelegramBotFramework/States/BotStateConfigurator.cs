@@ -35,20 +35,20 @@ public class BotStateConfigurator : IBotStateConfigurator
         _updatePipelineConfigurator.ConfigureBuilder(builder);
     }
 
-    public IBotStateConfigurator WithState(IBotState state)
+    public IBotStateConfigurator WithState(IBotStateDescriptor stateDescriptor)
     {
-        _onEnter = state.OnEnterAsync;
-        _onLeave = state.OnLeaveAsync;
-        _name = state.Name;
-        _isInitialState = state.IsInitial;
-        state.ConfigureUpdatePipeline(_updatePipelineConfigurator);
+        _onEnter = stateDescriptor.OnEnterAsync;
+        _onLeave = stateDescriptor.OnLeaveAsync;
+        _name = stateDescriptor.Name;
+        _isInitialState = stateDescriptor.IsInitial;
+        stateDescriptor.ConfigureUpdatePipeline(_updatePipelineConfigurator);
         return this;
     }
 
-    public IBotStateConfigurator WithState<TState>() where TState : class, IBotState
+    public IBotStateConfigurator WithState<TState>() where TState : class, IBotStateDescriptor
     {
         var serviceProvider = Services.BuildServiceProvider();
-        var state = (ActivatorUtilities.CreateInstance(serviceProvider, typeof(TState)) as IBotState)!;
+        var state = (ActivatorUtilities.CreateInstance(serviceProvider, typeof(TState)) as IBotStateDescriptor)!;
         _name = state.Name;
         _onLeave = state.OnLeaveAsync;
         _onEnter = state.OnEnterAsync;
@@ -87,10 +87,9 @@ public class BotStateConfigurator : IBotStateConfigurator
         return this;
     }
 
-    public BotStateDefinition BuildBotStateDefinition(IServiceProvider serviceProvider)
+    public BotState BuildBotStateDefinition(IServiceProvider serviceProvider)
     {
         var name = _name ?? throw new InvalidOperationException("State name is not set");
-        ;
         var isInitial = _isInitialState ?? false;
         var onEnter = _onEnter ?? EmptyCallback;
         var onLeave = _onLeave ?? EmptyCallback;
@@ -98,7 +97,7 @@ public class BotStateConfigurator : IBotStateConfigurator
         _updatePipelineConfigurator.ConfigureBuilder(updatePipelineBuilder);
         var updateDelegate = updatePipelineBuilder.Build();
 
-        return new BotStateDefinition
+        return new BotState
         {
             Name = name,
             OnEnter = onEnter,
