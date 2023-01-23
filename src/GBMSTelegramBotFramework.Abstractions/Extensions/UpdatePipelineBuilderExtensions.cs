@@ -7,7 +7,8 @@ public static class UpdatePipelineBuilderExtensions
     public static IUpdatePipelineBuilder Use(this IUpdatePipelineBuilder builder,
         Func<UpdateContext, UpdateDelegate, Task> middleware)
     {
-        return builder.Use(next => context => middleware(context, next));
+        return builder.Use(next => context =>
+            context.CancellationToken.IsCancellationRequested ? Task.CompletedTask : middleware(context, next));
     }
 
     public static IUpdatePipelineBuilder UseMiddleware<TMiddleware>(this IUpdatePipelineBuilder builder,

@@ -63,7 +63,7 @@ public class CommandMiddlewareTests
                .Should()
                .Be("4 5 8 11 23 3");
         context.Items.Should()
-               .ContainKey(CommandMiddleware.CommandNameKey)
+               .ContainKey(CommandsHandler.CommandNameKey)
                .WhoseValue.As<string>()
                .Should()
                .Be("te st");
@@ -88,7 +88,7 @@ public class CommandMiddlewareTests
                .Should()
                .BeEmpty();
         context.Items.Should()
-               .ContainKey(CommandMiddleware.CommandNameKey)
+               .ContainKey(CommandsHandler.CommandNameKey)
                .WhoseValue.As<string>()
                .Should()
                .Be("te st");
@@ -113,7 +113,7 @@ public class CommandMiddlewareTests
                .Should()
                .Be("12 22 4 5");
         context.Items.Should()
-               .ContainKey(CommandMiddleware.CommandNameKey)
+               .ContainKey(CommandsHandler.CommandNameKey)
                .WhoseValue.As<string>()
                .Should()
                .Be("/test");
@@ -138,7 +138,7 @@ public class CommandMiddlewareTests
                .Should()
                .BeEmpty();
         context.Items.Should()
-               .ContainKey(CommandMiddleware.CommandNameKey)
+               .ContainKey(CommandsHandler.CommandNameKey)
                .WhoseValue.As<string>()
                .Should()
                .Be("/test");

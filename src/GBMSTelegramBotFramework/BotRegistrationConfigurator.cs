@@ -1,5 +1,4 @@
 ﻿using GBMSTelegramBotFramework.Abstractions;
-using GBMSTelegramBotFramework.Abstractions.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot;
 
@@ -75,8 +74,6 @@ public class BotRegistrationConfigurator : IBotRegistrationConfigurator
 
             // Configure UpdatePipeline
             var updatePipelineBuilder = new UpdatePipelineBuilder(provider);
-            updatePipelineBuilder.UseMiddleware(typeof(StopMiddleware));
-            // updatePipelineBuilder.UseMiddleware(typeof(UserIdResolverMiddleware));
             _pipelineConfigurator.ConfigureBuilder(updatePipelineBuilder);
             bot.UpdateHandler = updatePipelineBuilder.Build();
 

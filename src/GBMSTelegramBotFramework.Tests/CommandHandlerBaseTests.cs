@@ -21,8 +21,8 @@ public class CommandHandlerBaseTests
     {
         var finalAssertion = (UpdateContext context) =>
         {
-            context.Items.Should().ContainKey(CommandMiddleware.CommandNameKey);
-            context.Items[CommandMiddleware.CommandNameKey].As<string>().Should().Be("/start");
+            context.Items.Should().ContainKey(CommandsHandler.CommandNameKey);
+            context.Items[CommandsHandler.CommandNameKey].As<string>().Should().Be("/start");
         };
         var bot = Utils.CreateTestBot(bot =>
         {

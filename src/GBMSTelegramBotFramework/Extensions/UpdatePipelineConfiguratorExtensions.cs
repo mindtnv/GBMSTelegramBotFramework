@@ -37,10 +37,4 @@ public static class UpdatePipelineConfiguratorExtensions
         configurator.Configure(x => x.UseHandler(instance));
         return configurator;
     }
-
-    public static IUpdatePipelineConfigurator UseReadMiddleware(this IUpdatePipelineConfigurator configurator)
-    {
-        configurator.UseMiddleware<ReadMiddleware>();
-        return configurator;
-    }
 }

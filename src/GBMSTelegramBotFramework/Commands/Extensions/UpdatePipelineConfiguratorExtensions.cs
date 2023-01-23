@@ -41,7 +41,7 @@ public static class UpdatePipelineConfiguratorExtensions
     public static IUpdatePipelineConfigurator UseCommands(this IUpdatePipelineConfigurator configurator)
     {
         var provider = configurator.Features.Get<ICommandDescriptorProvider>() ?? new CommandDescriptorProvider();
-        configurator.UseMiddleware(new CommandMiddleware(provider));
+        configurator.UseHandler(new CommandsHandler(provider));
         return configurator;
     }
 }
