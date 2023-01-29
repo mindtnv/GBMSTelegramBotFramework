@@ -1,11 +1,25 @@
-﻿# GBMS Telegram Bot Framework 
+﻿# GBMS Telegram Bot Framework
 
-**GBMS Telegram Bot Framework** is a simple framework for creating and hosting Telegram bots. 
+**GBMS Telegram Bot Framework** is a simple framework for creating and hosting Telegram bots.
 It is based on [Telegram Bot API](https://core.telegram.org/bots/api) and [Telegran.Bot](https://github.com/TelegramBots/Telegram.Bot).
 
 ## Supported Platforms
 
 Project targets .NET Standard 2.1 (GBMSTelegramBotFramework.AspNetCore - net7.0).
+
+## Instalation
+
+### AspNetCore
+
+```bash
+dotnet add package GBMSTelegramBotFramework.AspNetCore
+```
+
+### Microsoft.Extensions.Hosting with long polling
+
+```bash
+dotnet add package GBMSTelegramBotFramework
+```
 
 ## Example
 
@@ -76,7 +90,7 @@ This example shows how to create a bot with two commands: `/start` and `/process
 builder.Services.AddTelegramBot(bot =>
 {
     bot.ConfigureOptions(o =>
-        o.WithName("e-bot").WithToken("bot-token"));
+        o.WithName("example-bot").WithToken("bot-token"));
 
     bot.On.Command("/start", (ctx, args) => ctx.Reply.WithText("Hello world!"));
     bot.On.Command("/process", (ctx, args) => ctx.Reply.WithText("Processing..."));
@@ -101,6 +115,17 @@ class StartCommand : CommandBase<StartCommand>
 }
 ```
 
+```csharp
+builder.Services.AddTelegramBot(bot =>
+{
+    bot.ConfigureOptions(o =>
+        o.WithName("example-bot").WithToken("bot-token"));
+    
+    bot.WithCommand<StartCommand>();
+    bot.UseCommands();
+});
+```
+
 ### States
 
 This example shows hot to create a bot with two states: `main` and `process` and how to leave and enter states.
@@ -109,7 +134,7 @@ This example shows hot to create a bot with two states: `main` and `process` and
 builder.Services.AddTelegramBot(bot =>
 {
     bot.ConfigureOptions(o =>
-        o.WithName("e-bot").WithToken("bot-token"));
+        o.WithName("example-bot").WithToken("bot-token"));
 
     bot.On.Command("/start", (ctx, args) => ctx.EnterStateAsync("main"));
     bot.WithState(state =>
@@ -171,7 +196,7 @@ class MainState : BotStateBase
 builder.Services.AddTelegramBot(bot =>
 {
     bot.ConfigureOptions(o =>
-        o.WithName("e-bot").WithToken("bot-token"));
+        o.WithName("example-bot").WithToken("bot-token"));
 
     bot.On.Command("/start", (ctx, args) => ctx.EnterStateAsync("main"));
     bot.WithState<MainState>();
@@ -180,13 +205,6 @@ builder.Services.AddTelegramBot(bot =>
     bot.UseStates();
 });
 ```
-
-### Commands
-
-This example shows how to create a bot with two commands: `/start` and `/process`.
-
-```csharp
-
 
 
 
