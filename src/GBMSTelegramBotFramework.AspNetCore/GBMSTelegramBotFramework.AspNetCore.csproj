@@ -8,7 +8,11 @@
         <LangVersion>11</LangVersion>
         <IsPackable>true</IsPackable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>1.2.0</Version>
+        <Version>1.2.1</Version>
+        <Title>GBMSTelegramBotFramework.AspNetCore</Title>
+        <Authors>gbms</Authors>
+        <Description>Update controller for AspNetCore applications</Description>
+        <PackageProjectUrl>https://github.com/mindtnv/GBMSTelegramBotFramework</PackageProjectUrl>
     </PropertyGroup>
 
     <ItemGroup>

@@ -6,7 +6,11 @@
         <Nullable>enable</Nullable>
         <LangVersion>11</LangVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>1.2.0</Version>
+        <Version>1.2.1</Version>
+        <Title>Testing library for GBMS Telegram Bot Framework</Title>
+        <Authors>gbms</Authors>
+        <Description>Testing library for GBMS Telegram Bot Framework</Description>
+        <PackageProjectUrl>https://github.com/mindtnv/GBMSTelegramBotFramework</PackageProjectUrl>
     </PropertyGroup>
 
     <ItemGroup>
