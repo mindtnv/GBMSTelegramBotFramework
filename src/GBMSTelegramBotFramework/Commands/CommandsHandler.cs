@@ -5,23 +5,20 @@ using Telegram.Bot.Types.Enums;
 
 namespace GBMSTelegramBotFramework.Commands;
 
-public class CommandMiddleware : IUpdateMiddleware
+public class CommandsHandler : IUpdateHandler
 {
     private readonly ICommandDescriptorProvider _commandDescriptorProvider;
     public static string CommandNameKey => "CommandName";
 
-    public CommandMiddleware(ICommandDescriptorProvider commandDescriptorProvider)
+    public CommandsHandler(ICommandDescriptorProvider commandDescriptorProvider)
     {
         _commandDescriptorProvider = commandDescriptorProvider;
     }
 
-    public async Task HandleUpdateAsync(UpdateContext context, UpdateDelegate next)
+    public async Task HandleUpdateAsync(UpdateContext context)
     {
         if (context.Items.ContainsKey(CommandNameKey))
-        {
-            await next(context);
             return;
-        }
 
         var commandAndArgs = context.Update.Type switch
         {
@@ -32,10 +29,7 @@ public class CommandMiddleware : IUpdateMiddleware
         };
 
         if (commandAndArgs == null)
-        {
-            await next(context);
             return;
-        }
 
         var descriptor = commandAndArgs.CommandDescriptor;
         var command = descriptor.Instance ??
@@ -46,7 +40,6 @@ public class CommandMiddleware : IUpdateMiddleware
         await command!.ExecuteAsync(context, commandAndArgs.Args);
         if (context.Update.Type == UpdateType.CallbackQuery)
             await context.BotContext.Client.AnswerCallbackQueryAsync(context.Update.CallbackQuery!.Id);
-        await next(context);
     }
 
     private CommandAndArgs? ProcessMessage(UpdateContext context, ICommandDescriptorProvider provider) =>

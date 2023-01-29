@@ -12,7 +12,6 @@ public static class ServiceCollectionExtensions
         services.TryAddScoped<IUpdateHandlerFactory, UpdateHandlerFactory>();
         services.TryAddSingleton<IBotContextFactory, BotContextFactory>();
         services.TryAddSingleton<IUpdateContextFactory, UpdateContextFactory>();
-        services.TryAddScoped<StopMiddleware>();
         services.TryAddSingleton<IBotProvider, BotProvider>();
         services.TryAdd(ServiceDescriptor.Scoped(typeof(UpdateHandlerMiddleware<>),
             typeof(UpdateHandlerMiddleware<>)));

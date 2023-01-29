@@ -1,5 +1,4 @@
 ﻿using GBMSTelegramBotFramework.Abstractions;
-using GBMSTelegramBotFramework.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GBMSTelegramBotFramework.States;
@@ -18,7 +17,6 @@ public class BotStateConfigurator : IBotStateConfigurator
         Services = services;
         BotFeatures = botFeatures;
         _updatePipelineConfigurator = new UpdatePipelineConfigurator(Services, botFeatures);
-        _updatePipelineConfigurator.UseMiddleware<StopMiddleware>();
         On = _updatePipelineConfigurator.On;
     }
 

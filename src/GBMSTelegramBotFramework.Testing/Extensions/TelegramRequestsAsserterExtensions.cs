@@ -24,7 +24,7 @@ public static class TelegramRequestsAsserterExtensions
         return asserter;
     }
 
-    public static ITelegramRequestsAsserter ShouldNotSendMessage(this ITelegramRequestsAsserter asserter)
+    public static ITelegramRequestsAsserter ShouldHaveNotMessage(this ITelegramRequestsAsserter asserter)
     {
         asserter.IsFinished.Should().BeTrue();
         return asserter;
